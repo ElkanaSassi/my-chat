@@ -18,17 +18,17 @@ import { CreateUserFriendDto } from '../../DTO/create-user-friend.dto';
 
 @Controller('users')
 export class UsersController {
-    constructor(private usersService: UsersService) { }
+    constructor(private userService: UsersService) { }
 
     @Get()
     getAll() {
-        return this.usersService.getAllUsers();
+        return this.userService.getAllUsers();
     }
 
     @Post('createUser')
     @UsePipes(new ValidationPipe())
     createUser(@Body() createUserDto: CreateUserDto) {
-        return this.usersService.createUser(createUserDto);
+        return this.userService.createUser(createUserDto);
     }
 
     @Patch('updateUser/:username')
@@ -37,7 +37,7 @@ export class UsersController {
         const isValid = mongoose.Types.ObjectId.isValid(username);
         if (!isValid) throw new HttpException('Invalid Id', HttpStatus.BAD_REQUEST);
 
-        return this.usersService.updateUserByUserName(username, updateUser);
+        return this.userService.updateUserByUserName(username, updateUser);
     }
 
     @Delete('removeUser/:username')
@@ -45,7 +45,7 @@ export class UsersController {
         const isValid = mongoose.Types.ObjectId.isValid(username);
         if (!isValid) throw new HttpException('Invalid Id: Username not found!', HttpStatus.BAD_REQUEST);
 
-        return this.usersService.removeUserByUserName(username);
+        return this.userService.removeUserByUserName(username);
     }
 
 

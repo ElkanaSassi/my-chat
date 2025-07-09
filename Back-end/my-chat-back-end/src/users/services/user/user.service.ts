@@ -3,8 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Users } from 'src/schemas/users/users.schema';
 import { CreateUserDto } from '../../DTO/create-user.dto';
-import { userFriend, UserFriendSchema } from 'src/schemas/users/userFriend.schema';
-import { CreateUserFriendDto } from '../../DTO/create-user-friend.dto';
+import { userFriend } from 'src/schemas/users/userFriend.schema';
 
 @Injectable()
 export class UsersService {
