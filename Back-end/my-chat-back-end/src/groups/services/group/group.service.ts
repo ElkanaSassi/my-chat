@@ -22,7 +22,7 @@ export class GroupService {
         return new this.groupsModel(createGroupDto);
     }
 
-    async addUserToGroup(addUsersDto: AddUsersDto) {
+    async addUsersToGroup(addUsersDto: AddUsersDto) {
         const { groupId, usersList } = addUsersDto;
 
         const group = await this.groupsModel.findById(groupId);

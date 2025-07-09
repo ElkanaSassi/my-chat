@@ -18,8 +18,8 @@ export class GroupController {
         return this.groupService.createGroup(createGroupDto);
     }
 
-    @Patch()
-    addUserToGroup(@Body() addUsersDto: AddUsersDto) {
-        return this.groupService.addUserToGroup(addUsersDto);
+    @Patch('addUsersToGroup')
+    addUsersToGroup(@Body() addUsersDto: AddUsersDto) {
+        return this.groupService.addUsersToGroup(addUsersDto);
     }
 }

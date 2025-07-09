@@ -41,4 +41,8 @@
 - Friends list. (with online/offline)
 - Add and delete friends. (Deleting a friend leads to the deletion of the Dm chat)
 - New group.
+<<<<<<< HEAD
 - Chat history.
+=======
+- Chat history.
+>>>>>>> 55e7394c27bdd07a1ed55c773205731cfff32a64

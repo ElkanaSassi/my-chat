@@ -25,6 +25,11 @@ export class UsersController {
         return this.userService.getAllUsers();
     }
 
+    @Get('/:username')
+    getUser(@Param('username') username: string) {
+        return this.userService.getUserByUserName(username);
+    }
+
     @Post('createUser')
     @UsePipes(new ValidationPipe())
     createUser(@Body() createUserDto: CreateUserDto) {
@@ -47,7 +52,4 @@ export class UsersController {
 
         return this.userService.removeUserByUserName(username);
     }
-
-
-
 }

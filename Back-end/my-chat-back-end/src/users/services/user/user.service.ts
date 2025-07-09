@@ -14,8 +14,12 @@ export class UsersService {
     }
 
     getAllUsers() {
-        // Find with no filter -> all the records stored in the DB.
+        // Find all with no filter -> gets all the records stored in the DB.
         return this.usersModel.find().exec();
+    }
+
+    getUserByUserName(username: string) {
+        return this.usersModel.findById(username);
     }
 
     createUser(createUserDto: CreateUserDto) {
@@ -32,5 +36,5 @@ export class UsersService {
         // TODO: delete this user from the userFriend schema as well.
     }
 
-    
+
 }
