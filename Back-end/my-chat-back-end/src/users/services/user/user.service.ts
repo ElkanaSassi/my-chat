@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Users } from 'src/schemas/users/users.schema';
@@ -19,7 +19,10 @@ export class UsersService {
     }
 
     getUserByUserName(username: string) {
-        return this.usersModel.findById(username);
+        const user = this.usersModel.findById(username);
+        if(!user) throw new NotFoundException(`Invalid Username: Could't find user: ${username}.`);
+
+        return user;
     }
 
     createUser(createUserDto: CreateUserDto) {
