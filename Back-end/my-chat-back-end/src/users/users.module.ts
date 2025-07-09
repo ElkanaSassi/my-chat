@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './services/users.service';
-import { UsersController } from './controllers/users.controller';
+import { UsersService } from './services/user/user.service';
+import { UsersController } from './controllers/user/user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UsersSchema } from 'src/schemas/users.schema';
 import { userFriend, UserFriendSchema } from 'src/schemas/userFriend.schema';
+import { UserFriendService } from './services/user-friend/user-friend.service';
+import { UserFriendController } from './controllers/user-friend/user-friend.controller';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { userFriend, UserFriendSchema } from 'src/schemas/userFriend.schema';
       schema: UserFriendSchema
     }])
   ],
-  providers: [UsersService],
-  controllers: [UsersController]
+  providers: [UsersService, UserFriendService],
+  controllers: [UsersController, UserFriendController]
 })
 export class UsersModule { }

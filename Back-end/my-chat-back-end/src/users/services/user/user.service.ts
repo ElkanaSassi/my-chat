@@ -2,20 +2,21 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Users } from 'src/schemas/users.schema';
-import { CreateUserDto } from '../DTO/create-user.dto';
+import { CreateUserDto } from '../../DTO/create-user.dto';
 import { userFriend, UserFriendSchema } from 'src/schemas/userFriend.schema';
+import { CreateUserFriendDto } from '../../DTO/create-user-friend.dto';
 
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectModel(Users.name) private usersModel: Model<Users>,
-        @InjectModel(userFriend.name) private userFriendModel: Model<userFriend>
+        @InjectModel(Users.name) private usersModel: Model<Users>
     ) {
 
     }
 
     getAllUsers() {
-        return
+        // Find with no filter -> all the records stored in the DB.
+        return this.usersModel.find().exec();
     }
 
     createUser(createUserDto: CreateUserDto) {
@@ -23,13 +24,14 @@ export class UsersService {
         return newUser.save();
     }
 
-    updateUserByName(username: string, updateUserDto: Partial<CreateUserDto>) {
+    updateUserByUserName(username: string, updateUserDto: Partial<CreateUserDto>) {
         return this.usersModel.findByIdAndUpdate(username, updateUserDto);
     }
 
-    addNewFriendByUserName(username: string) {
-        // TODO: need a connction here to the userFriend schema...
-        
-        throw new HttpException('Faild: doesn\'t have conncation yet to the userFriend Shcema', HttpStatus.BAD_REQUEST);
+    removeUserByUserName(username: string) {
+        return this.usersModel.deleteOne((user) => user.username === username);
+        // TODO: delete this user from the userFriend schema as well.
     }
+
+    
 }
