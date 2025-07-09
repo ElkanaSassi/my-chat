@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
-import { AddUsersDto } from 'src/groups/DTO/add-users.dto';
+import { AddAndRemoveUsersDto } from 'src/groups/DTO/add-users.dto';
 import { CreateGroupDto } from 'src/groups/DTO/create-group.dto';
 import { GroupService } from 'src/groups/services/group/group.service';
 
@@ -7,9 +7,14 @@ import { GroupService } from 'src/groups/services/group/group.service';
 export class GroupController {
     constructor(private groupService: GroupService) { }
 
+    @Get('getUsers/:groupId')
+    getUsersInGroup(@Param('groupId') groupId: number) {
+        return this.groupService.getUserInGroup(groupId);
+    }
+
     @Get(':username')
     @UsePipes(new ValidationPipe)
-    getGroupsOfUser(@Param('username') username: string ) {
+    getGroupsOfUser(@Param('username') username: string) {
         return this.groupService.getGroupsOfUser(username);
     }
 
@@ -19,7 +24,12 @@ export class GroupController {
     }
 
     @Patch('addUsersToGroup')
-    addUsersToGroup(@Body() addUsersDto: AddUsersDto) {
+    addUsersToGroup(@Body() addUsersDto: AddAndRemoveUsersDto) {
         return this.groupService.addUsersToGroup(addUsersDto);
+    }
+
+    @Patch('removeUserFromGroup')
+    removeUserFromGroup(@Body() removeUsersDto: AddAndRemoveUsersDto) {
+        return this.groupService.removeUserFromGroup(removeUsersDto);
     }
 }

@@ -1,6 +1,6 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class AddUsersDto {
+export class AddAndRemoveUsersDto {
     @IsNumber()
     @IsNotEmpty()
     groupId: number;
