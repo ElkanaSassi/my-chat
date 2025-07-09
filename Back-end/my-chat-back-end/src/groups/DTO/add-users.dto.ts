@@ -1,21 +1,9 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateGroupDto {
+export class AddUsersDto {
     @IsNumber()
     @IsNotEmpty()
     groupId: number;
-
-    @IsString()
-    @IsNotEmpty()
-    groupName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    openDate: Date;
-
-    @IsString()
-    @IsNotEmpty()
-    groupManager: string;
     
     @IsArray()
     @IsString({ each: true })

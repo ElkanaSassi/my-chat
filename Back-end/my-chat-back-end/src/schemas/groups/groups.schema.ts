@@ -12,6 +12,9 @@ export class Groups {
 
     @Prop({ type: Date, required: true })
     openDate: Date;
+
+    @Prop({ required: true })
+    usersList: string[];
 }
 
 export const groupsSchema = SchemaFactory.createForClass(Groups); 
