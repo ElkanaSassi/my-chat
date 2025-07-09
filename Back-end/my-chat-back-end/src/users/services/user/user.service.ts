@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Users } from 'src/schemas/users.schema';
+import { Users } from 'src/schemas/users/users.schema';
 import { CreateUserDto } from '../../DTO/create-user.dto';
-import { userFriend, UserFriendSchema } from 'src/schemas/userFriend.schema';
+import { userFriend, UserFriendSchema } from 'src/schemas/users/userFriend.schema';
 import { CreateUserFriendDto } from '../../DTO/create-user-friend.dto';
 
 @Injectable()
