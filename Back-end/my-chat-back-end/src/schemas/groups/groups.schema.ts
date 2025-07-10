@@ -9,7 +9,7 @@ export class Groups {
     @Prop({ unique: true, required: true })
     groupId: number;
 
-    @Prop({ type: Date, required: true })
+    @Prop({ required: true })
     groupName: string;
 
     @Prop({type: Types.ObjectId , ref: 'Users'})

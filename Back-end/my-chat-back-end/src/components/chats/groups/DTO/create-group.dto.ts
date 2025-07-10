@@ -1,4 +1,4 @@
-import { ArrayUnique, IsArray, IsMongoId, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { ArrayUnique, IsArray, IsDate, IsMongoId, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateGroupDto {
     @IsNumber()
@@ -9,7 +9,7 @@ export class CreateGroupDto {
     @IsNotEmpty()
     groupName: string;
 
-    @IsString()
+    @IsDate()
     @IsNotEmpty()
     openDate: Date;
 
