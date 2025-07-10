@@ -1,8 +1,9 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document, Types } from "mongoose";
 
 
 @Schema()
-export class Users {
+export class Users extends Document{
 
     @Prop({ unique: true, required: true })
     username: string;
@@ -10,8 +11,11 @@ export class Users {
     @Prop({ type: Date, required: true })
     singupData: Date;
 
-    @Prop({type: Date, required: false})
+    @Prop({ type: Date, required: false })
     birthDate?: Date;
+
+    @Prop({ type: [{type: Types.ObjectId, ref: 'Users'}], default: []})
+    contacts: Types.ObjectId[];
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users); 
