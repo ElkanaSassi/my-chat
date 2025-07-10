@@ -12,6 +12,7 @@ import { Users, UsersSchema } from 'src/schemas/users/users.schema';
     },])
   ],
   providers: [UsersService],
-  controllers: [UsersController]
+  controllers: [UsersController],
+  exports: [UsersService, MongooseModule]
 })
 export class UsersModule { }

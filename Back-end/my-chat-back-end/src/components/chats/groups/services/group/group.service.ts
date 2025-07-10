@@ -12,7 +12,8 @@ import { Users } from 'src/schemas/users/users.schema';
 export class GroupService {
     constructor(
         private usersServies: UsersService,
-        @InjectModel(Groups.name) private groupsModel: Model<Groups>
+        @InjectModel(Groups.name) private groupsModel: Model<Groups>,
+        @InjectModel(Users.name) private usersModel: Model<Users>
     ) {
 
     }
