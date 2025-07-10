@@ -6,15 +6,15 @@ import { GroupService } from 'src/components/chats/groups/services/group/group.s
 @Controller('group')
 export class GroupController {
     constructor(private groupService: GroupService) { }
+    
+    @Get(':username')
+    getGroupsOfUser(@Param('username') username: string) {
+        return this.groupService.getGroupsOfUser(username);
+    }
 
     @Get('getUsers/:groupId')
     getUsersInGroup(@Param('groupId') groupId: number) {
         return this.groupService.getUserInGroup(groupId);
-    }
-
-    @Get(':username')
-    getGroupsOfUser(@Param('username') username: string) {
-        return this.groupService.getGroupsOfUser(username);
     }
 
     @Post('newGroup')

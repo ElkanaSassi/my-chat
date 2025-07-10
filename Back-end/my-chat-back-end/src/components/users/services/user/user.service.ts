@@ -18,6 +18,10 @@ export class UsersService {
         return await this.usersModel.find().exec();
     }
 
+    async getUsers(usernames: string[]) {
+        return this.usersModel.find({ username: { $in: usernames } }).exec();
+    }
+
     async getUserByUserName(username: string): Promise<Users> {
         const user = await this.usersModel.findOne({ username });
         if (!user) throw new NotFoundException(`Invalid Username: Could't find user: ${username}.`);
