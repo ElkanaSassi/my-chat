@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Users } from 'src/schemas/users/users.schema';
 import { CreateUserDto } from '../../DTO/create-user.dto';
 import { ContactsDto } from '../../DTO/add-contacts.dto';
@@ -25,6 +25,13 @@ export class UsersService {
     async getUserByUserName(username: string): Promise<Users> {
         const user = await this.usersModel.findOne({ username });
         if (!user) throw new NotFoundException(`Invalid Username: Could't find user: ${username}.`);
+
+        return user;
+    }
+
+    async getUserById(userId: Types.ObjectId): Promise<Users> {
+        const user = await this.usersModel.findById({ userId });
+        if (!user) throw new NotFoundException(`Invalid UserId: Could't find user with id: ${userId}.`);
 
         return user;
     }

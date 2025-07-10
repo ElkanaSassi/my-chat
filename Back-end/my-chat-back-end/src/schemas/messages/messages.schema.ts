@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose";
 import { Users } from "../users/users.schema";
 
-
 @Schema()
 export class Messages {
 
@@ -13,7 +12,7 @@ export class Messages {
     dateTime: Date;
 
     @Prop({ type: String, required: true})
-    date: string;
+    data: string;
 }
 
-export const messagesSchema = SchemaFactory.createForClass(Messages); 
+export const messagesSchema = SchemaFactory.createForClass(Messages);

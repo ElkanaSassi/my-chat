@@ -11,7 +11,7 @@ import { Users } from 'src/schemas/users/users.schema';
 @Injectable()
 export class GroupService {
     constructor(
-        private usersServies: UsersService,
+        private usersServices: UsersService,
         @InjectModel(Groups.name) private groupsModel: Model<Groups>,
         @InjectModel(Users.name) private usersModel: Model<Users>
     ) {
@@ -61,7 +61,7 @@ export class GroupService {
     }
     
     private async getValidUsers(usersList: string[]) {
-        const membersList = await this.usersServies.getUsers(usersList);
+        const membersList = await this.usersServices.getUsers(usersList);
 
         const userIds = membersList.map(user => user._id);
         const userNames = membersList.map(user => user.username);
