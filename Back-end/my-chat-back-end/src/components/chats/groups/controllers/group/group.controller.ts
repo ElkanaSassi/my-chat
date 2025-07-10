@@ -13,22 +13,24 @@ export class GroupController {
     }
 
     @Get(':username')
-    @UsePipes(new ValidationPipe)
     getGroupsOfUser(@Param('username') username: string) {
         return this.groupService.getGroupsOfUser(username);
     }
 
     @Post('newGroup')
+    @UsePipes(new ValidationPipe())
     createNewGroup(@Body() createGroupDto: CreateGroupDto) {
         return this.groupService.createGroup(createGroupDto);
     }
 
     @Patch('addUsersToGroup')
+    @UsePipes(new ValidationPipe())
     addUsersToGroup(@Body() addUsersDto: AddAndRemoveUsersDto) {
         return this.groupService.addUsersToGroup(addUsersDto);
     }
 
-    @Patch('removeUserFromGroup')
+    @Patch('removeUserFromGroup') 
+    @UsePipes(new ValidationPipe())
     removeUserFromGroup(@Body() removeUsersDto: AddAndRemoveUsersDto) {
         return this.groupService.removeUserFromGroup(removeUsersDto);
     }

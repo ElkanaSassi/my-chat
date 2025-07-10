@@ -51,6 +51,7 @@ export class UsersController {
     }
 
     @Delete('removeContact/:username')
+    @UsePipes(new ValidationPipe())
     async removeContacts(@Param('username') username: string, @Body() removeContactsDto: ContactsDto) {
         return await this.usersService.removeContactsFromUser(username, removeContactsDto);
     }
