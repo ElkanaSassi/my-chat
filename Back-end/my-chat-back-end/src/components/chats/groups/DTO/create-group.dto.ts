@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { ArrayUnique, IsArray, IsMongoId, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateGroupDto {
     @IsNumber()
@@ -15,10 +15,17 @@ export class CreateGroupDto {
 
     @IsString()
     @IsNotEmpty()
-    groupManager: string;
-    
+    admin: string;
+
     @IsArray()
-    @IsString({ each: true })
+    @IsMongoId({ each: true })
+    @ArrayUnique()
     @IsNotEmpty()
-    usersList: string[];
+    membersList: string[];
+
+    @IsArray()
+    @IsMongoId({ each: true })
+    @ArrayUnique()
+    @IsNotEmpty()
+    messages: string[];
 }

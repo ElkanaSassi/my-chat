@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AddAndRemoveUsersDto } from 'src/groups/DTO/add-users.dto';
-import { CreateGroupDto } from 'src/groups/DTO/create-group.dto';
+import { AddAndRemoveUsersDto } from 'src/components/chats/groups/DTO/add-users.dto';
+import { CreateGroupDto } from 'src/components/chats/groups/DTO/create-group.dto';
 import { Groups } from 'src/schemas/groups/groups.schema';
 import { union, difference } from 'lodash';
 

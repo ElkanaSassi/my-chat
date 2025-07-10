@@ -3,7 +3,7 @@ import { Document, Types } from "mongoose";
 
 
 @Schema()
-export class Users extends Document{
+export class Users extends Document {
 
     @Prop({ unique: true, required: true })
     username: string;
@@ -14,7 +14,7 @@ export class Users extends Document{
     @Prop({ type: Date, required: false })
     birthDate?: Date;
 
-    @Prop({ type: [{type: Types.ObjectId, ref: 'Users'}], default: []})
+    @Prop({ type: [{ type: Types.ObjectId, ref: 'Users' }], default: [] })
     contacts: Types.ObjectId[];
 }
 
