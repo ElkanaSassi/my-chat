@@ -22,7 +22,7 @@ export class GroupService {
         return this.groupsModel.find({ username }).exec();
     }
 
-    getUserInGroup(groupId: number) {
+    getUsersInGroup(groupId: number) {
         const group = this.checkGroupExistence(groupId).then.arguments;
 
         return group.usersList;

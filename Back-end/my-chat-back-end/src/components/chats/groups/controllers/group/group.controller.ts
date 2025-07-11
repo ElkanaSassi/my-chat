@@ -14,7 +14,7 @@ export class GroupController {
 
     @Get('getUsers/:groupId')
     getUsersInGroup(@Param('groupId') groupId: number) {
-        return this.groupService.getUserInGroup(groupId);
+        return this.groupService.getUsersInGroup(groupId);
     }
 
     @Post('newGroup')
