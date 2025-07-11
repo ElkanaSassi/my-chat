@@ -13,6 +13,9 @@ export class Messages {
 
     @Prop({ type: String, required: true})
     data: string;
+
+
+    // TODO: maybe add a IsUpdated Boolean
 }
 
 export const messagesSchema = SchemaFactory.createForClass(Messages);
