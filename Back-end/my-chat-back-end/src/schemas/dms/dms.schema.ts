@@ -18,8 +18,8 @@ export class Dms {
     @Prop({ required: true })
     userTwo: string;
 
-    @Prop({ type: [{ type: Types.ObjectId, ref: 'Users' }], default: [] })
-    messages: Types.ObjectId[];
+    @Prop({ required: false, type: [{ type: Types.ObjectId, ref: 'Users' }], default: [] })
+    messages?: Types.ObjectId[];
 }
 
 export const dmsSchema = SchemaFactory.createForClass(Dms); 

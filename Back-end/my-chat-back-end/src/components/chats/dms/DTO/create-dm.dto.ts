@@ -7,10 +7,6 @@ export class CreateDmDto {
     @IsNotEmpty()
     dmsId: number;
 
-    @IsDate()
-    @IsNotEmpty()
-    openDate: Date;
-
     @IsString()
     @IsNotEmpty()
     userOne: string;
@@ -19,9 +15,4 @@ export class CreateDmDto {
     @IsNotEmpty()
     userTwo: string;
 
-    @IsArray()
-    @IsMongoId({ each: true })
-    @ArrayUnique()
-    @IsNotEmpty()
-    messages: Types.ObjectId[];
 }
