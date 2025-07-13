@@ -1,0 +1,23 @@
+.layout {
+    display: flex;
+    height: 100vh;
+    /* full viewport height */
+    width: 100vw;
+    /* full viewport width */
+    overflow: hidden;
+}
+
+.sidebar-layout {
+    background-color: aqua;
+    width: 30%;
+    min-width: 250px;
+    max-width: 400px;
+    border-right: 1px solid #ddd;
+}
+
+.chat-layout {
+    background-color: green;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}

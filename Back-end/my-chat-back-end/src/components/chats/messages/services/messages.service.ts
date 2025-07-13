@@ -24,7 +24,7 @@ export class MessagesServices {
             data: data,
         }
 
-        const newMessage = await new this.messagesModel(messageComplete);
+        const newMessage = new this.messagesModel(messageComplete);
         return await newMessage.save();
     }
 

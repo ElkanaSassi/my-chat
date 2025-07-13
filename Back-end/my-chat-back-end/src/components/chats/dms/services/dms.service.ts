@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { UsersService } from 'src/components/users/services/user/user.service';
-import { Dms } from 'src/schemas/dms/dms.schema';
+import { Dms } from 'src/schemas/chats/dms/dms.schema';
 import { Users } from 'src/schemas/users/users.schema';
 import { CreateDmDto } from '../DTO/create-dm.dto';
 
