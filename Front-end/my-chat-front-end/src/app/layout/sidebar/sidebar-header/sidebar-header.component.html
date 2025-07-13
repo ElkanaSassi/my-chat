@@ -1,12 +1,16 @@
-<div>
+<div class="nav-tabs-container">
     <ul class="nav nav-tabs">
-        <li class="nav-item" role="presentation" routerLinkActive="active" 
-        
-        >
-            <a class="nav-link active" href="#">Chats</a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" routerLink="chats" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Chats
+            </a>
         </li>
-        <li class="nav-item" role="presentation" routerLinkActive="active">
-            <a class="nav-link" href="#">Contacts</a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" routerLink="contacts" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Contacts
+            </a>
         </li>
     </ul>
 </div>

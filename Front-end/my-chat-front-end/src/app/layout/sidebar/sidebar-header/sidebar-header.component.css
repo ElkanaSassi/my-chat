@@ -1,0 +1,38 @@
+/* Parent container of nav-tabs should stretch */
+.nav-tabs-container {
+  width: 100%;
+}
+
+/* Custom nav-tabs styling */
+.nav-tabs {
+  border: none;
+  justify-content: center;
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  padding: 4px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Remove default tab border */
+.nav-tabs .nav-link {
+  border: none;
+  border-radius: 20px;
+  color: #555;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.nav-tabs .nav-link:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
+/* Active tab */
+.nav-tabs .nav-link.active {
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
+}

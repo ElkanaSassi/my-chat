@@ -5,7 +5,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, SidebarComponent, ChatWindowComponent],
+  imports: [SidebarComponent, ChatWindowComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })

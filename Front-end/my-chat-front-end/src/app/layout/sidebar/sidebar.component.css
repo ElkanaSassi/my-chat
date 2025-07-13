@@ -1,16 +1,21 @@
 .sidebar-layout {
-    width: 30%;
-    min-width: 250px;
-    max-width: 400px;
+  width: 30%;
+  min-width: 250px;
+  max-width: 400px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 app-sidebar-header {
-    height: 15%;
-    border-right: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 }
 
-app-chat-window {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.sidebar-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 12px;
+  background-color: #e6d081; /* Your router content background */
+  display: flex;
+  flex-direction: column;
 }
