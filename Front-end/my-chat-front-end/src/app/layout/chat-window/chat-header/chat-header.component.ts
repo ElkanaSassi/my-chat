@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './chat-header.component.css'
 })
 export class ChatHeaderComponent {
-
+  selectedChat = {name: "hello"};
 }

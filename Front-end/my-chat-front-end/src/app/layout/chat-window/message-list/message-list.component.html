@@ -1,1 +1,13 @@
-<p>message-list.component works!</p>
+<div class="messages-list">
+  <div
+    *ngFor="let message of messages"
+    class="message-row"
+    [ngClass]="{ 'mine': message.isMine, 'theirs': !message.isMine }"
+  >
+    <div class="message-bubble">
+      <div class="sender-name" *ngIf="!message.isMine">{{ message.senderName }}</div>
+      <div class="text">{{ message.text }}</div>
+      <div class="timestamp">{{ message.timestamp }}</div>
+    </div>
+  </div>
+</div>

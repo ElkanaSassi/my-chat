@@ -3,6 +3,7 @@ import { UsersService } from './services/user/user.service';
 import { UsersController } from './controllers/user/user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UsersSchema } from 'src/schemas/users/users.schema';
+import { MessagesServices } from '../chats/messages/services/messages.service';
 
 @Module({
   imports: [

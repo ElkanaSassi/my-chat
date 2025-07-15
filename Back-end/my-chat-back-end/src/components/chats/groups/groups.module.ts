@@ -1,20 +1,24 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Groups, groupsSchema } from 'src/schemas/chats/groups/groups.schema';
+import { Groups, GroupsSchema } from 'src/schemas/chats/groups/groups.schema';
 import { GroupService } from './services/group/group.service';
 import { GroupController } from './controllers/group/group.controller';
 import { UsersService } from 'src/components/users/services/user/user.service';
 import { UsersModule } from 'src/components/users/users.module';
+import { GroupsGateway } from './groups.gateway';
+import { MessagesServices } from '../messages/services/messages.service';
+import { MessagesModule } from '../messages/messages.module';
 
 @Module({
     imports: [
         MongooseModule.forFeature([{
             name: Groups.name,
-            schema: groupsSchema,
+            schema: GroupsSchema,
         }]),
         UsersModule,
+        MessagesModule
     ],
-    providers: [GroupService, UsersService],
+    providers: [GroupService, UsersService, MessagesServices, GroupsGateway],
     controllers: [GroupController]
 })
 export class GroupsModule { }

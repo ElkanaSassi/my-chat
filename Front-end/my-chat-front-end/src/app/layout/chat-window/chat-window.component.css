@@ -1,42 +1,44 @@
 .chat-window-layout {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #ddd;
-    background-color: #f0f0f0; 
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f0f0;
 }
 
 .chat-header-layout {
-    height: 60px; 
-    flex-shrink: 0;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
+  height: 60px; /* Keep consistent with sidebar header */
+  flex-shrink: 0;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #e5ddd5;
 }
 
 .message-list-layout {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-    background-color: #e5ddd5; 
-    display: flex;
-    flex-direction: column;
-    gap: 8px; 
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .message-input-layout {
-    width: 10%;
-    height: 70px;
-    flex-shrink: 0;
-    background-color: #fff;
-    border-top: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-}
-
-.blabla {
-    background-color: green;
+  height: 70px;
+  flex-shrink: 0;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
 }

@@ -8,6 +8,7 @@ import { DmsController } from './dms/controllers/dms.controller';
 import { GroupController } from './groups/controllers/group/group.controller';
 import { DmsSchema } from 'src/schemas/chats/dms/dms.schema';
 import { GroupsSchema } from 'src/schemas/chats/groups/groups.schema';
+import { ChatsGateway } from './chats.gateway';
 
 @Module({
     imports: [
@@ -20,7 +21,7 @@ import { GroupsSchema } from 'src/schemas/chats/groups/groups.schema';
             }
         },])
     ],
-    providers: [DmsService, GroupService, MessagesServices],
+    providers: [DmsService, GroupService, MessagesServices, ChatsGateway],
     controllers: [DmsController, GroupController],
     exports: [MongooseModule]
 })

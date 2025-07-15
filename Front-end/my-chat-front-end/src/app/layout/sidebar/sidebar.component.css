@@ -1,7 +1,5 @@
-.sidebar-layout {
-  width: 30%;
-  min-width: 250px;
-  max-width: 400px;
+.sidebar-header {
+  flex: 1;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,7 +9,7 @@ app-sidebar-header {
   border-right: 1px solid #ddd;
 }
 
-.sidebar-content {
+.sidebar-list {
   flex-grow: 1;
   overflow-y: auto;
   padding: 12px;
