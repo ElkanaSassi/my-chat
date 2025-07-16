@@ -6,16 +6,22 @@ import { CreateGroupDto } from 'src/components/chats/groups/DTO/create-group.dto
 import { Groups } from 'src/schemas/chats/groups/groups.schema';
 import { union, difference } from 'lodash';
 import { UsersService } from 'src/components/users/services/user.service';
-import { Users } from 'src/schemas/users/users.schema';
+import { Chats } from 'src/schemas/chats/chats.schema';
 
 @Injectable()
 export class GroupService {
+    private groupsModel: Model<Groups>;
+
     constructor(
         private usersServices: UsersService,
-        @InjectModel(Groups.name) private groupsModel: Model<Groups>,
-        @InjectModel(Users.name) private usersModel: Model<Users>
+        @InjectModel(Chats.name) private readonly chatsModel: Model<Chats>,
     ) {
+        const groupsModel = this.chatsModel.discriminators?.Groups;
 
+        if (!groupsModel) {
+            throw new Error('Groups discriminator model not found!');
+        }
+        this.groupsModel = groupsModel;
     }
 
     async getGroupsOfUser(username: string) {

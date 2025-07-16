@@ -4,14 +4,22 @@ import { Model, Types } from 'mongoose';
 import { UsersService } from '../../../users/services/user.service';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
 import { CreateDmDto } from '../DTO/create-dm.dto';
+import { Chats } from 'src/schemas/chats/chats.schema';
 
 @Injectable()
 export class DmsService {
+    private dmsModel: Model<Dms>;
+
     constructor(
         private usersServices: UsersService,
-        @InjectModel(Dms.name) private dmsModel: Model<Dms>,
+        @InjectModel(Chats.name) private readonly chatsModel: Model<Chats>,
     ) {
+        const dmsModel = this.chatsModel.discriminators?.Groups;
 
+        if (!dmsModel) {
+            throw new Error('Groups discriminator model not found!');
+        }
+        this.dmsModel = dmsModel;
     }
 
     async createDm(createDmDto: CreateDmDto) {

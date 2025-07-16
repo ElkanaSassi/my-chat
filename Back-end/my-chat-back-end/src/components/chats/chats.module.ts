@@ -18,8 +18,6 @@ import { MessagesModule } from './messages/messages.module';
                 return ChatsSchema;
             }
         },]),
-        DmsModule,
-        GroupsModule,
         MessagesModule,
     ],
     providers: [ChatsGateway],

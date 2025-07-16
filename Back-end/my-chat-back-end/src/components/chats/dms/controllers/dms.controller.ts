@@ -23,8 +23,8 @@ export class DmsController {
     }
 
     @Delete(':username/:dmId')
-    async deleteUserDm(@Param('username') username: string, @Param('dmId') dmId: Types.ObjectId) {
-        return await this.dmsServies.deleteUserDm(username, dmId);
+    async deleteUserDm(@Param('username') userId: Types.ObjectId, @Param('dmId') dmId: Types.ObjectId) {
+        return await this.dmsServies.deleteUserDm(userId, dmId);
     }
 
 }

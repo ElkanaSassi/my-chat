@@ -7,7 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { MessagesServices } from '../messages/services/messages.service';
-import { GroupService } from './services/group/group.service';
+import { GroupService } from './services/group.service';
 import { CreateMessageDto } from '../messages/DTO/create-message.dto';
 import { UsePipes, ValidationPipe, Logger } from '@nestjs/common';
 
