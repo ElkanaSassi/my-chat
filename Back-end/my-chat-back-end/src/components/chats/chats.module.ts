@@ -1,28 +1,29 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Chats, ChatsSchema } from 'src/schemas/chats/chats.schema';
-import { DmsService } from './dms/services/dms.service';
-import { GroupService } from './groups/services/group/group.service';
-import { MessagesServices } from './messages/services/messages.service';
-import { DmsController } from './dms/controllers/dms.controller';
-import { GroupController } from './groups/controllers/group/group.controller';
-import { DmsSchema } from 'src/schemas/chats/dms/dms.schema';
-import { GroupsSchema } from 'src/schemas/chats/groups/groups.schema';
+import { Dms, DmsSchema } from 'src/schemas/chats/dms/dms.schema';
+import { Groups, GroupsSchema } from 'src/schemas/chats/groups/groups.schema';
 import { ChatsGateway } from './chats.gateway';
+import { DmsModule } from './dms/dms.module';
+import { GroupsModule } from './groups/groups.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
     imports: [
         MongooseModule.forFeatureAsync([{
             name: Chats.name,
             useFactory: () => {
-                ChatsSchema.discriminator('dm', DmsSchema);
-                ChatsSchema.discriminator('group', GroupsSchema);
+                ChatsSchema.discriminator(Dms.name, DmsSchema);
+                ChatsSchema.discriminator(Groups.name, GroupsSchema);
                 return ChatsSchema;
             }
-        },])
+        },]),
+        DmsModule,
+        GroupsModule,
+        MessagesModule,
     ],
-    providers: [DmsService, GroupService, MessagesServices, ChatsGateway],
-    controllers: [DmsController, GroupController],
+    providers: [ChatsGateway],
+    controllers: [],
     exports: [MongooseModule]
 })
-export class UsersModule { }
+export class ChatsModule { }

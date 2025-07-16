@@ -1,12 +1,10 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Types } from "mongoose";
 
-export class AddAndRemoveUsersDto {
-    @IsNumber()
-    @IsNotEmpty()
-    groupId: number;
+export class AddOrRemoveUsersDto {
     
     @IsArray()
     @IsString({ each: true })
     @IsNotEmpty()
-    usersList: string[];
+    membersList: Types.ObjectId[];
 }

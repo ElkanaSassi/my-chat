@@ -1,8 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { model, Types } from "mongoose";
+import { Messages } from "../messages/messages.schema";
 
 const options = {
     discriminatorKey: 'chatType',
+    _id: false
 };
 
 @Schema(options)
@@ -13,8 +15,8 @@ export class Chats {
     @Prop({ type: [{ type: Types.ObjectId, ref: 'Users' }], default: [] })
     membersList: Types.ObjectId[];
 
-    @Prop({ type: [{ type: Types.ObjectId, ref: 'Messages' }], default: [] })
-    messages: Types.ObjectId[];
+    @Prop({ type: [Messages], default: [] })
+    messages: Messages[];
 }
 
 export const ChatsSchema = SchemaFactory.createForClass(Chats);

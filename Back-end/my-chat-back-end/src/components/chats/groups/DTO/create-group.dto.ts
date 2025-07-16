@@ -1,31 +1,20 @@
 import { ArrayUnique, IsArray, IsDate, IsMongoId, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Types } from "mongoose";
 
 export class CreateGroupDto {
-    @IsNumber()
+    @IsArray()
+    @IsMongoId({ each: true })
     @IsNotEmpty()
-    groupId: number;
+    membersList: Types.ObjectId[];
 
     @IsString()
     @IsNotEmpty()
     groupName: string;
 
-    @IsDate()
-    @IsNotEmpty()
-    openDate: Date;
-
     @IsString()
     @IsNotEmpty()
     admin: string;
 
-    @IsArray()
-    @IsMongoId({ each: true })
-    @ArrayUnique()
-    @IsNotEmpty()
-    membersList: string[];
-
-    @IsArray()
-    @IsMongoId({ each: true })
-    @ArrayUnique()
-    @IsNotEmpty()
-    messages: string[];
+    @IsString()
+    description: string;
 }

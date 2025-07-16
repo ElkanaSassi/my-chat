@@ -5,9 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Dms, DmsSchema } from 'src/schemas/chats/dms/dms.schema';
 import { MessagesModule } from '../messages/messages.module';
 import { MessagesServices } from '../messages/services/messages.service';
-import { UsersService } from 'src/components/users/services/user/user.service';
+import { UsersService } from 'src/components/users/services/user.service';
 import { DmsGateway } from './dms.gateway';
-import { UsersModule } from '../chats.module';
+import { UsersModule } from '../../users/users.module';
 
 @Module({
     imports: [
@@ -18,8 +18,9 @@ import { UsersModule } from '../chats.module';
         UsersModule,
         MessagesModule
     ],
-    providers: [DmsService, MessagesServices, UsersService, DmsGateway],
+    providers: [DmsService, MessagesServices, DmsGateway],
     controllers: [DmsController],
+    exports: [DmsService]
 })
 export class DmsModule {
 

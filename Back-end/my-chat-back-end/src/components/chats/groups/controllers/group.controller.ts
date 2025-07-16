@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
-import { AddAndRemoveUsersDto } from 'src/components/chats/groups/DTO/add-users.dto';
+import { Types } from 'mongoose';
+import { AddOrRemoveUsersDto } from 'src/components/chats/groups/DTO/add-users.dto';
 import { CreateGroupDto } from 'src/components/chats/groups/DTO/create-group.dto';
-import { GroupService } from 'src/components/chats/groups/services/group/group.service';
+import { GroupService } from 'src/components/chats/groups/services/group.service';
 
 @Controller('group')
 export class GroupController {
@@ -13,7 +14,7 @@ export class GroupController {
     }
 
     @Get('getUsers/:groupId')
-    getUsersInGroup(@Param('groupId') groupId: number) {
+    getUsersInGroup(@Param('groupId') groupId: Types.ObjectId) {
         return this.groupService.getUsersInGroup(groupId);
     }
 
@@ -25,13 +26,13 @@ export class GroupController {
 
     @Patch('addUsersToGroup')
     @UsePipes(new ValidationPipe())
-    addUsersToGroup(@Body() addUsersDto: AddAndRemoveUsersDto) {
-        return this.groupService.addUsersToGroup(addUsersDto);
+    addUsersToGroup(@Param('groupId') groupId: Types.ObjectId, @Body() addUsersDto: AddOrRemoveUsersDto) {
+        return this.groupService.addUsersToGroup(groupId, addUsersDto);
     }
 
-    @Patch('removeUserFromGroup') 
+    @Patch('removeUserFromGroup/:groupId') 
     @UsePipes(new ValidationPipe())
-    removeUserFromGroup(@Body() removeUsersDto: AddAndRemoveUsersDto) {
-        return this.groupService.removeUserFromGroup(removeUsersDto);
+    removeUserFromGroup(@Param('groupId') groupId: Types.ObjectId, @Body() removeUsersDto: AddOrRemoveUsersDto) {
+        return this.groupService.removeUserFromGroup(groupId, removeUsersDto);
     }
 }

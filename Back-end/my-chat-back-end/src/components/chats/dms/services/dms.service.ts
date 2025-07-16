@@ -1,44 +1,43 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { UsersService } from 'src/components/users/services/user/user.service';
+import { UsersService } from '../../../users/services/user.service';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
-import { Users } from 'src/schemas/users/users.schema';
 import { CreateDmDto } from '../DTO/create-dm.dto';
 
 @Injectable()
 export class DmsService {
     constructor(
         private usersServices: UsersService,
-        @InjectModel(Dms.name) private dmsModel: Model<Users>,
+        @InjectModel(Dms.name) private dmsModel: Model<Dms>,
     ) {
 
     }
 
     async createDm(createDmDto: CreateDmDto) {
-        const userOne = await this.usersServices.getUserByUserName(createDmDto.userOne);
-        const userTwo = await this.usersServices.getUserByUserName(createDmDto.userTwo);
+        if (createDmDto.membersList.length != 2) throw new NotAcceptableException('Members Error: the amount of members aren\'t two.');
+        const userOne = await this.usersServices.getUserById(createDmDto.membersList[0]);
+        const userTwo = await this.usersServices.getUserById(createDmDto.membersList[1]);
 
         const dmComplete = {
-            dmsId: createDmDto.dmsId,
-            openDate: new Date(),
-            userOne: createDmDto.userOne,
-            userTwo: createDmDto.userTwo,
+            membersList: [userOne, userTwo],
+            chatType: Dms.name,
         }
 
-        const newDm = await new this.dmsModel(dmComplete);
-        return newDm.save();
+        const newDm = new this.dmsModel(dmComplete);
+        return await newDm.save();
     }
 
     async getUserDms(username: string) {
         const user = await this.usersServices.getUserByUserName(username);
 
         const userDms = await this.dmsModel.find({
-            $or: [
-                { userOne: user._id },
-                { userTwo: user._id }
-            ]
-        }).exec();
+            membersList: {
+                $in: [
+                    user._id,
+                ]
+            }
+        });
         if (!userDms.length) throw new NotFoundException(`Failed: Couldn't find DMs of user: ${user.username}.`);
 
         return userDms;
@@ -56,13 +55,16 @@ export class DmsService {
 
     // Note: maybe make that when user deletes the dm, it will affect only in is cline side. 
     // (so the other user could stil look at the chat)
-    async deleteUserDm(username: string, dmId: Types.ObjectId) {
-        const user = await this.usersServices.getUserByUserName(username);
+    async deleteUserDm(userId: Types.ObjectId, dmId: Types.ObjectId) {
+        const user = await this.usersServices.getUserById(userId);
+        // add validation
+        const userOldDm = await this.dmsModel.findById(dmId);
+        if (!userOldDm) throw new NotFoundException(`Invalid DM id: Couldn't find DM is : ${dmId}.`);
 
-        const userDm = await this.dmsModel.findByIdAndDelete(dmId);
-        if (!userDm) throw new NotFoundException(`Invalid DM id: Couldn't find DM is : ${dmId}.`);
+        const newMembersList = userOldDm.membersList.splice(userOldDm.membersList.indexOf(userId, 0));
+        const userNewDm = await this.dmsModel.findByIdAndUpdate(dmId, { membersList: newMembersList });
 
-        return userDm;
+        return userNewDm;
     }
 
 

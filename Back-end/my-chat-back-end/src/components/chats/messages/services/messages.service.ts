@@ -3,15 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Messages } from 'src/schemas/messages/messages.schema';
 import { CreateMessageDto } from '../DTO/create-message.dto';
-import { UsersService } from 'src/components/users/services/user/user.service';
+import { UsersService } from 'src/components/users/services/user.service';
 import { Users } from 'src/schemas/users/users.schema';
 import { UpdateMessageDto } from '../DTO/update-message.dto';
 
 @Injectable()
 export class MessagesServices {
     constructor(
-        private usersServices: UsersService,
-        @InjectModel(Messages.name) private messagesModel: Model<Messages>,
+        private usersServices: UsersService
     ) { }
 
     async createMessage(createMessageDto: CreateMessageDto) {
@@ -24,14 +23,14 @@ export class MessagesServices {
             data: data,
         }
 
-        const newMessage = new this.messagesModel(messageComplete);
-        return await newMessage.save();
+        //const newMessage = new this.messagesModel(messageComplete);
+        //return await newMessage.save();
     }
 
     async deleteMessage(messageId: Types.ObjectId) {
         await this.checkMessageExistence(messageId);
 
-        return await this.messagesModel.findByIdAndDelete(messageId);
+        //return await this.messagesModel.findByIdAndDelete(messageId);
     }
 
     async updateMessage(messageId: Types.ObjectId, updateMessageDto: UpdateMessageDto) {
@@ -42,14 +41,14 @@ export class MessagesServices {
             data: updateMessageDto.data,
         }
 
-        return await this.messagesModel.findByIdAndUpdate(messageId, messageUpdateComplete, { new: true });
+        //return await this.messagesModel.findByIdAndUpdate(messageId, messageUpdateComplete, { new: true });
     }
 
     private async checkMessageExistence(messageId: Types.ObjectId) {
-        const message = await this.messagesModel.findById(messageId);
-        if (!message) throw new NotFoundException(`Invalid Message Id: Couldn't find message with id: ${messageId}`);
+        //const message = await this.messagesModel.findById(messageId);
+        //if (!message) throw new NotFoundException(`Invalid Message Id: Couldn't find message with id: ${messageId}`);
 
-        return message;
+        //return message;
     }
 
 }

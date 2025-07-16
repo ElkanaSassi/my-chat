@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MessagesServices } from './services/messages.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Messages, messagesSchema } from 'src/schemas/messages/messages.schema';
-import { UsersModule } from '../chats.module';
+import { UsersModule } from '../../users/users.module';
 
 @Module({
     imports: [
