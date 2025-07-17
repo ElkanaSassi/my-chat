@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { AddOrRemoveUsersDto } from 'src/components/chats/groups/DTO/add-users.dto';
-import { CreateGroupDto } from 'src/components/chats/groups/DTO/create-group.dto';
+import { AddOrRemoveUsersDto } from 'src/dtos/groups/add-users.dto';
+import { CreateGroupDto } from 'src/dtos/groups/create-group.dto';
 import { Groups } from 'src/schemas/chats/groups/groups.schema';
 import { union, difference } from 'lodash';
 import { UsersService } from 'src/components/users/services/user.service';

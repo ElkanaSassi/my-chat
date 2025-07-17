@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DmsService } from '../services/dms.service';
 import { Types } from 'mongoose';
-import { CreateDmDto } from '../DTO/create-dm.dto';
+import { CreateDmDto } from '../../../../dtos/dms/create-dm.dto';
 
 @Controller('dms')
 export class DmsController {

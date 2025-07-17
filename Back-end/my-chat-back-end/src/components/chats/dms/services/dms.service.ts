@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, Types } from 'mongoose';
 import { UsersService } from '../../../users/services/user.service';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
-import { CreateDmDto } from '../DTO/create-dm.dto';
+import { CreateDmDto } from '../../../../dtos/dms/create-dm.dto';
 import { Chats } from 'src/schemas/chats/chats.schema';
 
 @Injectable()

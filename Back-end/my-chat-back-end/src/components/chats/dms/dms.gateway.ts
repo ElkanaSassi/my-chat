@@ -8,7 +8,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { MessagesServices } from '../messages/services/messages.service';
 import { DmsService } from './services/dms.service';
-import { CreateMessageDto } from '../messages/DTO/create-message.dto';
+import { CreateMessageDto } from '../../../dtos/messages/create-message.dto';
 import { UsePipes, ValidationPipe, Logger } from '@nestjs/common';
 
 @WebSocketGateway({ cors: { origin: '*' } })

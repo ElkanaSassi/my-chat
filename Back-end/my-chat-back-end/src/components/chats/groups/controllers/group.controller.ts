@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { AddOrRemoveUsersDto } from 'src/components/chats/groups/DTO/add-users.dto';
-import { CreateGroupDto } from 'src/components/chats/groups/DTO/create-group.dto';
+import { AddOrRemoveUsersDto } from 'src/dtos/groups/add-users.dto';
+import { CreateGroupDto } from 'src/dtos/groups/create-group.dto';
 import { GroupService } from 'src/components/chats/groups/services/group.service';
 
 @Controller('group')
