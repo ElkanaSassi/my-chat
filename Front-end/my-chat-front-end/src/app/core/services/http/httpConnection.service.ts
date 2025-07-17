@@ -3,8 +3,10 @@ import { inject, Injectable } from "@angular/core";
 
 
 @Injectable({ providedIn: 'root' })
-export class HttpConnection {
-    private http = inject(HttpClient);
+export class HttpService {
+    constructor(private http: HttpClient) {}
 
-    
+    method(Data: string) {
+
+    }
 }

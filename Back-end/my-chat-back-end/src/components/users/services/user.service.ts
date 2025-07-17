@@ -13,9 +13,9 @@ export class UsersService {
 
     }
 
-    async getAllUsers() {
+    getAllUsers() {
         // Find all with no filter -> gets all the records stored in the DB.
-        return await this.usersModel.find();
+        return this.usersModel.find();
     }
 
     async getUsers(usernames: Types.ObjectId[]) {

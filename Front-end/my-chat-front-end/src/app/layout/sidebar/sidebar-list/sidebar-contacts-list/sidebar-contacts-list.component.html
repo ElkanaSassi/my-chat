@@ -1,1 +1,10 @@
 <p>sidebar-contacts-list works!</p>
+
+<div class="contacts-list">
+    <div class="contact-item" *ngFor="let contact of contactsList">
+        <div class="contact-name">
+            {{ contact.name }}
+            <button (click)="onContactAdd()">Add</button>
+        </div>
+    </div>
+</div>

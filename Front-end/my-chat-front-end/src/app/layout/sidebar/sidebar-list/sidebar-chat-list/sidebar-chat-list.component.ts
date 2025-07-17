@@ -9,5 +9,12 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar-chat-list.component.css'
 })
 export class SidebarChatListComponent {
-
+  chats = [
+    {
+      name: "Mom",
+    },
+    {
+      name: "Bro",
+    }
+  ]
 }

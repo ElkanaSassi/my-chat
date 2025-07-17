@@ -1,8 +1,8 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory, SchemaOptions } from "@nestjs/mongoose";
 import { model, Types } from "mongoose";
 import { Messages } from "../messages/messages.schema";
 
-const options = {
+const options: SchemaOptions = {
     discriminatorKey: 'chatType',
     _id: false
 };

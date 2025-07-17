@@ -8,10 +8,6 @@ import { ChatsModule } from '../chats.module';
 
 @Module({
     imports: [
-        // MongooseModule.forFeature([{
-        //     name: Groups.name,
-        //     schema: GroupsSchema,
-        // }]),
         UsersModule,
         forwardRef(() => ChatsModule),
         MessagesModule

@@ -18,8 +18,8 @@ export class UsersController {
     constructor(private usersService: UsersService) { }
 
     @Get()
-    async getAll() {
-        return await this.usersService.getAllUsers();
+    getAll() {
+        return   this.usersService.getAllUsers();
     }
 
     @Get(':username')
