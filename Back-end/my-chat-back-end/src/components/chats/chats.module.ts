@@ -8,16 +8,20 @@ import { DmsModule } from './dms/dms.module';
 import { GroupsModule } from './groups/groups.module';
 import { MessagesModule } from './messages/messages.module';
 
+
+
 @Module({
     imports: [
-        MongooseModule.forFeatureAsync([{
-            name: Chats.name,
-            useFactory: () => {
-                ChatsSchema.discriminator(Dms.name, DmsSchema);
-                ChatsSchema.discriminator(Groups.name, GroupsSchema);
-                return ChatsSchema;
-            }
-        },]),
+        MongooseModule.forFeature([
+            {
+                name: Chats.name,
+                schema: ChatsSchema,
+                discriminators: [
+                    { name: Dms.name, schema: DmsSchema },
+                    { name: Groups.name, schema: GroupsSchema },
+                ],
+            },
+        ]),
         MessagesModule,
     ],
     providers: [ChatsGateway],
