@@ -1,6 +1,6 @@
 import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { UsersService } from '../../../users/services/user.service';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
 import { CreateDmDto } from '../DTO/create-dm.dto';
@@ -14,12 +14,9 @@ export class DmsService {
         private usersServices: UsersService,
         @InjectModel(Chats.name) private readonly chatsModel: Model<Chats>,
     ) {
-        const dmsModel = this.chatsModel.discriminators?.Groups;
+        const dmsModel = this.chatsModel.discriminators?.Dms;
 
-        if (!dmsModel) {
-            throw new Error('Groups discriminator model not found!');
-        }
-        this.dmsModel = dmsModel;
+        this.dmsModel = dmsModel as Model<Dms>;
     }
 
     async createDm(createDmDto: CreateDmDto) {

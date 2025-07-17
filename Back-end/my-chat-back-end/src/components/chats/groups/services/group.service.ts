@@ -18,10 +18,7 @@ export class GroupService {
     ) {
         const groupsModel = this.chatsModel.discriminators?.Groups;
 
-        if (!groupsModel) {
-            throw new Error('Groups discriminator model not found!');
-        }
-        this.groupsModel = groupsModel;
+        this.groupsModel = groupsModel as Model<Groups>;
     }
 
     async getGroupsOfUser(username: string) {
