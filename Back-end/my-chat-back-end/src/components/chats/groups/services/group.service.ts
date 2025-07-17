@@ -7,6 +7,7 @@ import { Groups } from 'src/schemas/chats/groups/groups.schema';
 import { union, difference } from 'lodash';
 import { UsersService } from 'src/components/users/services/user.service';
 import { Chats } from 'src/schemas/chats/chats.schema';
+import { Users } from 'src/schemas/users/users.schema';
 
 @Injectable()
 export class GroupService {
@@ -21,7 +22,7 @@ export class GroupService {
         this.groupsModel = groupsModel as Model<Groups>;
     }
 
-    async getGroupsOfUser(username: string) {
+    public async getGroupsOfUser(username: string): Promise<Groups[]> {
         const user = await this.usersServices.getUserByUserName(username);
 
         const userGroups = await this.groupsModel.find({
@@ -31,47 +32,59 @@ export class GroupService {
                 ]
             }
         }).exec();
-        if (!userGroups.length) throw new NotFoundException(`Failed: Couldn't find DMs of user: ${user.username}.`);
+        if (userGroups.length === 0) throw new NotFoundException(`Failed: Couldn't find GroupsS of user: ${user.username}.`);
 
         return userGroups;
     }
 
-    async getUsersInGroup(groupId: Types.ObjectId) {
-        const group = await this.checkGroupExistence(groupId);
+    public async getUsersInGroup(groupId: Types.ObjectId): Promise<Users[]> {
+        const group = await this.groupsModel.findById(groupId).exec();
+        if (!group) {
+            throw new NotFoundException(`Invalid Group Id: Group with Id: ${groupId} was not found!`);
+        }
 
         return group.membersList;
     }
 
-    async createGroup(createGroupDto: CreateGroupDto) {
+    public async createGroup(createGroupDto: CreateGroupDto): Promise<Groups> {
         const newGroup = new this.groupsModel(createGroupDto);
-        return await newGroup.save();
+        return newGroup.save();
     }
 
-    async addUsersToGroup(groupId: Types.ObjectId, addUsersDto: AddOrRemoveUsersDto) {
-        const group = await this.checkGroupExistence(groupId);
-        const membersList = await this.getValidUsers(addUsersDto.membersList);
+    public async addUsersToGroup(groupId: Types.ObjectId, addUsersDto: AddOrRemoveUsersDto): Promise<Groups> {
+        const usersToAdd = await this.getValidUsers(addUsersDto.membersList);
 
-        group.membersList = union(group.membersList, membersList);
-        await group.save();
+        const updatedGroup = await this.groupsModel.findByIdAndUpdate(
+            groupId,
+            { $addToSet: { membersList: { $each: usersToAdd } } },
+            { new: true } // returns the updated group.
+        ).exec();
+
+        if (!updatedGroup) {
+            throw new NotFoundException(`Invalid Group Id: Group with Id: ${groupId} was not found!`);
+        }
+
+        return updatedGroup;
     }
 
-    async removeUserFromGroup(groupId: Types.ObjectId, removeUserDto: AddOrRemoveUsersDto) {
-        const group = await this.checkGroupExistence(groupId);
-        const membersList = await this.getValidUsers(removeUserDto.membersList);
+    public async removeUserFromGroup(groupId: Types.ObjectId, removeUserDto: AddOrRemoveUsersDto): Promise<Groups> {
+        const usersToRemove = await this.getValidUsers(removeUserDto.membersList);
 
-        group.membersList = difference(group.membersList, membersList);
-        return await group.save();
+        const updatedGroup = await this.groupsModel.findByIdAndUpdate(
+            groupId,
+            { $pullAll: { membersList: usersToRemove } },
+            { new: true } // returns the updated group.
+        ).exec();
+
+        if (!updatedGroup) {
+            throw new NotFoundException(`Invalid Group Id: Group with Id: ${groupId} was not found!`);
+        }
+
+        return updatedGroup;
     }
 
-    private async checkGroupExistence(groupId: Types.ObjectId) {
-        const group = await this.groupsModel.findById({ groupId }).exec();
-        if (!group) throw new NotFoundException(`Invalid Group Id: Group with Id: ${groupId} was not found!`);
-
-        return group;
-    }
-
-    private async getValidUsers(membersList: Types.ObjectId[]) {
-        const ActiveMembersList = await this.usersServices.getUsers(membersList);
+    private async getValidUsers(membersList: Types.ObjectId[]): Promise<Users[]> {
+        const ActiveMembersList = await this.usersServices.getUsersByIds(membersList);
 
         const userIds = ActiveMembersList.map(user => user._id);
         const userNames = ActiveMembersList.map(user => user.username);

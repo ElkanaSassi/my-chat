@@ -4,7 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { GroupsModule } from './components/chats/groups/groups.module';
 import { DmsModule } from './components/chats/dms/dms.module';
 import { MessagesModule } from './components/chats/messages/messages.module';
-import { Chats } from './schemas/chats/chats.schema';
 import { ChatsModule } from './components/chats/chats.module';
 
 @Module({

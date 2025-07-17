@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose";
 import { Chats } from "../chats.schema";
+import { Users } from "src/schemas/users/users.schema";
 
 
 @Schema()
@@ -9,7 +10,7 @@ export class Groups extends Chats {
     groupName: string;
 
     @Prop({ type: Types.ObjectId, ref: 'Users' })
-    admin: Types.ObjectId;
+    admin: Users;
 
     @Prop()
     description: string;

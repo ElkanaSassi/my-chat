@@ -5,9 +5,7 @@ export class CreateUserDto {
     @IsNotEmpty()
     username: string;
     
-    @IsString()
-    @IsNotEmpty()
-    singupDate: Date;
+    password: string;
     
     @IsString()
     birthDate?: Date;
