@@ -1,10 +1,18 @@
 <p>sidebar-contacts-list works!</p>
 
+<!-- <button (click)="onContactAdd()">Add contacts</button> -->
+
+<select id="userSelect" [(ngModel)]="selectedUserId" class="styled-select">
+    <option value="" disabled selected>Select a user</option>
+    <option *ngFor="let user of users" [value]="user.id">
+        {{ user.name }}
+    </option>
+</select>
+
 <div class="contacts-list">
     <div class="contact-item" *ngFor="let contact of contactsList">
         <div class="contact-name">
             {{ contact.name }}
-            <button (click)="onContactAdd()">Add</button>
         </div>
     </div>
 </div>

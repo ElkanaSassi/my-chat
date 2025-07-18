@@ -1,31 +1,48 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { User } from '../../../shared/types/user.type';
-import { FormsModule } from '@angular/forms';
-import { WebSocketService } from '../../../core/services/websocket/websocket.service';
-import { SocketEvent } from '../../../core/services/websocket/websocket-events.enum';
+import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { LocalStorageService } from '../../../core/services/localStorage/localStorage.service';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+    selector: 'app-register',
+    standalone: true,
+    imports: [CommonModule, RouterModule, ReactiveFormsModule],
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  constructor(private webSocketService: WebSocketService) {}
+    registerForm: FormGroup;
+    isRegisterSuccessful: boolean = true;
 
-  @Input() username: string;
-  @Input() birthdate: Date;
-  @Input() password: string;
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+        private localStorage: LocalStorageService,
+        private fb: FormBuilder,
+    ) {
+        this.registerForm = this.fb.group({
+            username: ['', Validators.required],
+            password: ['', Validators.required]
+        });
+    }
 
-  onAddTask() {
-    
-    // this.webSocketService.send(,{
-    //   username: this.username,
-    //   birthdate: this.birthdate,
-    //   password: this.password,
-    // })
-  }
+    onSubmit() {
+        const register = {
+            username: this.registerForm.value.username,
+            password: this.registerForm.value.password,
+        }
+
+        this.authService.register(register).subscribe({
+            next: (res) => {
+                this.localStorage.setItem('user', JSON.stringify(res.user));
+                this.router.navigate(['/layout']);
+            },
+            error: (err) => {
+                this.isRegisterSuccessful = false;
+            }
+        });
+    }
+
 }

@@ -1,5 +1,5 @@
-export type User = {
+export type UserInfo = {
+    id: string;
     username: string;
     password: string;
-    birthdate?: Date;
 }

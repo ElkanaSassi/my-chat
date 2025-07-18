@@ -44,3 +44,50 @@
 .contact-name button:hover {
   background-color: #45a049;
 }
+
+
+.user-select-container {
+  background-color: #1F1F1F;
+  padding: 20px;
+  color: white;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.styled-select {
+  font-size: 13px;
+  font-family: "Segoe UI Variable Text", "Segoe UI";
+  color: #FFF;
+  background: #2F2F31;
+  border: 1px solid #2F2F31;
+  padding: 5px 7px;
+  border-radius: 4px;
+  appearance: none;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.styled-select:hover {
+  background: #3C3C3C;
+  border-color: #3C3C3C;
+}
+
+.styled-select option {
+  background-color: #2B2B2B;
+  color: #FFF;
+  padding: 5px 13px;
+}
+
+button {
+  background-color: #3C3C3C;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
