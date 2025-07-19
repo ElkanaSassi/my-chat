@@ -24,9 +24,9 @@ export class UsersController {
         return this.usersService.getAllUsers();
     }
 
-    @Get(':username')
-    public getUser(@Param('username') username: string) {
-        return this.usersService.getUserByUserName(username);
+    @Get(':userId')
+    public getUser(@Param('userId') userId: Types.ObjectId) {
+        return this.usersService.getUserById(userId);
     }
 
     @Post()

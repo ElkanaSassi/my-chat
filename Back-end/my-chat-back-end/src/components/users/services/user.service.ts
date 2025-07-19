@@ -30,7 +30,7 @@ export class UsersService {
     }
 
     public async getUserById(userId: Types.ObjectId): Promise<Users> {
-        const user = await this.usersModel.findById({ userId }).exec();
+        const user = await this.usersModel.findById({ _id: userId }).exec();
         if (!user) throw new NotFoundException(`Invalid UserId: Could't find user with id: ${userId}.`);
 
         return user;
@@ -70,14 +70,14 @@ export class UsersService {
     public async addContactsToUser(userId: Types.ObjectId, userContactsdDto: ContactsDto) {
         const contactIdsToAdd = await this.getValidContacts(userContactsdDto);
 
-        return this.usersModel.findByIdAndUpdate({ userId }, { contacts: contactIdsToAdd }).exec();
+        return this.usersModel.findByIdAndUpdate({ _id: userId }, { contacts: contactIdsToAdd }).exec();
     }
 
     async removeContactsFromUser(userId: Types.ObjectId, userContactsdDto: ContactsDto): Promise<Users> {
         const contactIdsToRemove = await this.getValidContacts(userContactsdDto);
 
         const updatedUser = await this.usersModel.findByIdAndUpdate(
-            { userId },
+            { _id: userId },
             { $pullAll: { contacts: contactIdsToRemove } },
             { new: true }
         ).exec();
@@ -89,29 +89,19 @@ export class UsersService {
     }
 
     private async getValidContacts(userContactsdDto: ContactsDto): Promise<Types.ObjectId[]> {
-        const usernames = userContactsdDto.contacts;
+        console.log('contacts input:', userContactsdDto.contacts);
 
-        const { contactIds, contactNames } = await this.mapingContactDto(usernames);
+        const objectIds = userContactsdDto.contacts.map(id => new Types.ObjectId(id));
+        console.log('objectIds:', objectIds);
 
-        const foundUsernames = new Set(contactNames); // set -> unique 
-        const notFound = usernames.filter(name => !foundUsernames.has(name));
-        if (notFound.length) {
-            throw new NotFoundException(`Faild: Users not found: ${notFound.join(', ')}`);
-        }
+        const foundUsers = await this.usersModel.find(
+            { _id: { $in: objectIds } }
+        ).exec();
 
-        return contactIds;
-    }
+        console.log('foundUsers:', foundUsers);
 
-    private async mapingContactDto(usernames: string[]): Promise<{ contactIds: Types.ObjectId[], contactNames: string[] }> {
-        // Geting the id for each username 
-        const contacts = await this.usersModel.find({
-            username: { $in: usernames },
-        }, '_id username').exec();
+        const validIds: Types.ObjectId[] = foundUsers.map(user => user._id as Types.ObjectId);
 
-        // Making an array for contactIds and contactNames.
-        const contactIds = contacts.map((user) => user._id as Types.ObjectId);
-        const contactNames = contacts.map((user) => user.username as string);
-
-        return { contactIds, contactNames };
+        return validIds;
     }
 }

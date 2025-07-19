@@ -15,7 +15,7 @@ export class AuthService {
     private loadUserFromStorage(): void {
         const stored = localStorage.getItem('user');
         if (stored) {
-            this.userInfo = JSON.parse(stored);
+            //this.userInfo = JSON.parse(stored);
         }
     }
 

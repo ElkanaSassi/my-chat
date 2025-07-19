@@ -7,5 +7,5 @@ export class ContactsDto {
     @IsArray()
     @ArrayUnique()
     @IsMongoId({ each: true })
-    contacts: string[];
+    contacts: Types.ObjectId[];
 }
