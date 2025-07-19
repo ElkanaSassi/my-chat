@@ -30,7 +30,7 @@ export class LoginComponent {
 
     ngOnInit() {
         if (this.authService.isLoggedIn()) {
-            this.router.navigate(['/layout']);
+            this.router.navigate(['/layout/sidebar/chats']);
         }
     }
 

@@ -5,4 +5,5 @@ import { SidebarContactsListComponent } from './sidebar-list/sidebar-contacts-li
 export const routes: Routes = [
   { path: 'chats', component: SidebarChatListComponent },
   { path: 'contacts', component: SidebarContactsListComponent },
+  { path: '', redirectTo: 'chats', pathMatch: 'full' },
 ];

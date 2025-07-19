@@ -12,15 +12,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class SidebarContactsListComponent {
   //constructor(private httpService: HttpService) {}
-  selectedUserId: string = '';
-  
-  users = [
-    { id: 'u1', name: 'Alice Smith' },
-    { id: 'u2', name: 'Bob Johnson' },
-    { id: 'u3', name: 'Charlie Lee' },
-    { id: 'u4', name: 'Diana Prince' },
-    { id: 'u5', name: 'Ethan Hunt' }
+  showUsersPool = false;
+
+  availableUsers = [
+    { name: 'Alice' },
+    { name: 'Bob' },
+    { name: 'Charlie' }
   ];
+
+  onAddUser(user: any) {
+    console.log('User to add:', user);
+    this.availableUsers = this.availableUsers.filter(u => u !== user);
+    this.contactsList.push(user);
+    // Your logic here
+  }
 
   contactsList = [
     {

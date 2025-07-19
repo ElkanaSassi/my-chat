@@ -1,13 +1,34 @@
 <p>sidebar-contacts-list works!</p>
 
 <!-- <button (click)="onContactAdd()">Add contacts</button> -->
-
+<!-- 
 <select id="userSelect" [(ngModel)]="selectedUserId" class="styled-select">
     <option value="" disabled selected>Select a user</option>
     <option *ngFor="let user of users" [value]="user.id">
         {{ user.name }}
     </option>
-</select>
+</select> -->
+
+
+
+<button class="open-users-btn" (click)="showUsersPool = !showUsersPool">
+  Add Contact
+</button>
+
+<!-- Popup user list -->
+<div class="users-pool" *ngIf="showUsersPool">
+  <div class="users-pool-header">
+    <span>Select a user to add</span>
+    <button class="btn btn-danger" (click)="showUsersPool = false">X</button>
+  </div>
+
+  <ul class="users-list">
+    <li *ngFor="let user of availableUsers" class="user-item">
+      <span>{{ user.name }}</span>
+      <button class="add-btn" (click)="onAddUser(user)">Add</button>
+    </li>
+  </ul>
+</div>
 
 <div class="contacts-list">
     <div class="contact-item" *ngFor="let contact of contactsList">
