@@ -33,7 +33,8 @@ export class RegisterComponent {
             username: this.registerForm.value.username,
             password: this.registerForm.value.password,
         }
-
+        
+        console.log('in register component!');
         this.authService.register(register).subscribe({
             next: (res) => {
                 this.localStorage.setItem('user', JSON.stringify(res.user));

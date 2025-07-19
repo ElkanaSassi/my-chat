@@ -39,8 +39,8 @@ export class UsersService {
     public async createUser(createUserDto: CreateUserDto): Promise<Users> {
         const newCompleteUser = {
             username: createUserDto.username,
+            password: createUserDto.password,
             singupData: Date.now(),
-            birthDate: createUserDto?.birthDate,
         }
         const newUser = new this.usersModel(newCompleteUser);
         return await newUser.save();

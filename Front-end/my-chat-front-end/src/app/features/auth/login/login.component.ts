@@ -39,7 +39,7 @@ export class LoginComponent {
             username: this.loginForm.value.username,
             password: this.loginForm.value.password,
         }
-
+        
         this.authService.login(login).subscribe({
             next: (res) => {
                 this.localStorage.setItem('user', JSON.stringify(res.user));

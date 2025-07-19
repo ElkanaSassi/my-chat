@@ -14,9 +14,6 @@ export class Users extends Document {
     @Prop({ type: Date, required: true })
     singupData: Date;
 
-    @Prop({ type: Date, required: false })
-    birthDate?: Date;
-
     @Prop({ type: [{ type: Types.ObjectId, ref: 'Users' }], default: [] })
     contacts: Types.ObjectId[];
 }

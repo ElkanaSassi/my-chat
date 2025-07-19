@@ -5,6 +5,7 @@ import { GroupsModule } from './components/chats/groups/groups.module';
 import { DmsModule } from './components/chats/dms/dms.module';
 import { MessagesModule } from './components/chats/messages/messages.module';
 import { ChatsModule } from './components/chats/chats.module';
+import { AuthModule } from './components/auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ChatsModule } from './components/chats/chats.module';
     DmsModule,
     MessagesModule,
     ChatsModule,
+    AuthModule,
     MongooseModule.forRoot('mongodb://127.0.0.1/nest'),
   ],
   controllers: [],
