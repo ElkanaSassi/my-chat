@@ -13,6 +13,7 @@ import { UsersService } from '../services/user.service';
 import { CreateUserDto } from '../../../dtos/users/create-user.dto';
 import { ContactsDto } from '../../../dtos/users/add-contacts.dto';
 import { Users } from 'src/schemas/users/users.schema';
+import { Types } from 'mongoose';
 
 @Controller('users')
 export class UsersController {
@@ -28,28 +29,28 @@ export class UsersController {
         return this.usersService.getUserByUserName(username);
     }
 
-    @Post('createUser')
+    @Post()
     public createUser(@Body() createUserDto: CreateUserDto) {
         return this.usersService.createUser(createUserDto);
     }
 
-    @Patch('updateUser/:username')
-    public updateUserByUserName(@Param('username') username: string, @Body() updateUser: Partial<CreateUserDto>) {
-        return this.usersService.updateUserByUserName(username, updateUser);
+    @Patch(':userId')
+    public updateUserByUserName(@Param('userId') userId: Types.ObjectId, @Body() updateUser: Partial<CreateUserDto>) {
+        return this.usersService.updateUserById(userId, updateUser);
     }
 
-    @Delete('removeUser/:username')
-    public  removeUserByUserName(@Param('username') username: string) {
-        return this.usersService.removeUserByUserName(username);
+    @Delete(':userId')
+    public  removeUserByUserName(@Param('userId') userId: Types.ObjectId) {
+        return this.usersService.removeUserById(userId);
     }
 
-    @Patch('addContacts/:username')
-    public addContacts(@Param('username') username: string, @Body() addContactsDto: ContactsDto) {
-        return this.usersService.addContactsToUser(username, addContactsDto);
+    @Patch('addContacts/:userId')
+    public addContacts(@Param('userId') userId: Types.ObjectId, @Body() addContactsDto: ContactsDto) {
+        return this.usersService.addContactsToUser(userId, addContactsDto);
     }
 
-    @Delete('removeContact/:username')
-    public removeContacts(@Param('username') username: string, @Body() removeContactsDto: ContactsDto) {
-        return this.usersService.removeContactsFromUser(username, removeContactsDto);
+    @Delete('removeContacts/:userId')
+    public removeContacts(@Param('userId') userId: Types.ObjectId, @Body() removeContactsDto: ContactsDto) {
+        return this.usersService.removeContactsFromUser(userId, removeContactsDto);
     }
 }

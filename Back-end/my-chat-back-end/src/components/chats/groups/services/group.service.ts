@@ -22,8 +22,8 @@ export class GroupService {
         this.groupsModel = groupsModel as Model<Groups>;
     }
 
-    public async getGroupsOfUser(username: string): Promise<Groups[]> {
-        const user = await this.usersServices.getUserByUserName(username);
+    public async getGroupsOfUser(userId: Types.ObjectId): Promise<Groups[]> {
+        const user = await this.usersServices.getUserById(userId);
 
         const userGroups = await this.groupsModel.find({
             membersList: {

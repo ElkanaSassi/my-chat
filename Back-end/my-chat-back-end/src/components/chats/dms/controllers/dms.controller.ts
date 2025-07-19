@@ -13,18 +13,18 @@ export class DmsController {
         return this.dmsServies.createDm(createDmDto);
     }
 
-    @Get(':username')
-    public getUserDms(@Param('username') username: string): Promise<Dms[]> {
-        return this.dmsServies.getUserDms(username);
+    @Get(':userId')
+    public getUserDms(@Param('userId') userId: Types.ObjectId): Promise<Dms[]> {
+        return this.dmsServies.getUserDms(userId);
     }
 
-    @Get(':dmId')
+    @Get('messages/:dmId')
     public getDmMessages(@Param() dmId: Types.ObjectId): Promise<Dms> {
         return this.dmsServies.getDmMessages(dmId);
     }
 
-    @Delete(':username/:dmId')
-    public deleteUserDm(@Param('username') userId: Types.ObjectId, @Param('dmId') dmId: Types.ObjectId)
+    @Delete(':userId/:dmId')
+    public deleteUserDm(@Param('userId') userId: Types.ObjectId, @Param('dmId') dmId: Types.ObjectId)
         : Promise<Dms> {
         return this.dmsServies.deleteUserDm(userId, dmId);
     }

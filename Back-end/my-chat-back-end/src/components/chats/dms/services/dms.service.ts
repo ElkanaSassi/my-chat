@@ -37,8 +37,8 @@ export class DmsService {
         return newDm.save();
     }
 
-    public async getUserDms(username: string): Promise<Dms[]> {
-        const user = await this.usersServices.getUserByUserName(username);
+    public async getUserDms(userId: Types.ObjectId): Promise<Dms[]> {
+        const user = await this.usersServices.getUserById(userId);
 
         const userDms = await this.dmsModel.find({
             membersList: { $in: [user._id] }

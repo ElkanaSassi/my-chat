@@ -46,20 +46,20 @@ export class UsersService {
         return await newUser.save();
     }
 
-    public async updateUserByUserName(username: string, updateUserDto: Partial<CreateUserDto>): Promise<Users> {
-        const updatedUser = await this.usersModel.findOneAndUpdate({ username }, updateUserDto).exec();
-        if (!updatedUser) throw new NotFoundException(`UPDATE USER FAILD: Invalid Username. Could't find user '${username}'.`);
+    public async updateUserById(userId: Types.ObjectId, updateUserDto: Partial<CreateUserDto>): Promise<Users> {
+        const updatedUser = await this.usersModel.findByIdAndUpdate({ userId }, updateUserDto).exec();
+        if (!updatedUser) throw new NotFoundException(`UPDATE USER FAILD: Invalid userId. Could't find user ID: '${userId}'.`);
 
         return updatedUser;
     }
 
-    public async removeUserByUserName(username: string): Promise<Users> {
-        const deletedUser = await this.usersModel.findByIdAndDelete({ username }).exec();
-        if (!deletedUser) throw new NotFoundException(`DELETE USER FAILD: Invalid Username. Could't find user '${username}'.`);
+    public async removeUserById(userId: Types.ObjectId): Promise<Users> {
+        const deletedUser = await this.usersModel.findByIdAndDelete({ userId }).exec();
+        if (!deletedUser) throw new NotFoundException(`DELETE USER FAILD: Invalid userId. Could't find user ID: '${userId}'.`);
 
         await this.usersModel.updateMany(
-            { contacts: username }, // To get all users with this username in contacts.
-            { $pull: { contacts: username } } // $pull deletes the username from contacts.
+            { contacts: userId }, // To get all users with this username in contacts.
+            { $pull: { contacts: userId } } // $pull deletes the username from contacts.
         );
 
         // need to add deletion from groups and dms as well.
@@ -67,22 +67,22 @@ export class UsersService {
         return deletedUser;
     }
 
-    public async addContactsToUser(username: string, userContactsdDto: ContactsDto) {
+    public async addContactsToUser(userId: Types.ObjectId, userContactsdDto: ContactsDto) {
         const contactIdsToAdd = await this.getValidContacts(userContactsdDto);
 
-        return this.usersModel.findOneAndUpdate({ username }, { contacts: contactIdsToAdd }).exec();
+        return this.usersModel.findByIdAndUpdate({ userId }, { contacts: contactIdsToAdd }).exec();
     }
 
-    async removeContactsFromUser(username: string, userContactsdDto: ContactsDto): Promise<Users> {
+    async removeContactsFromUser(userId: Types.ObjectId, userContactsdDto: ContactsDto): Promise<Users> {
         const contactIdsToRemove = await this.getValidContacts(userContactsdDto);
 
-        const updatedUser = await this.usersModel.findOneAndUpdate(
-            { username: username },
+        const updatedUser = await this.usersModel.findByIdAndUpdate(
+            { userId },
             { $pullAll: { contacts: contactIdsToRemove } },
             { new: true }
         ).exec();
         if (!updatedUser) {
-            throw new NotFoundException(`Faild: User with username '${username}' not found.`);
+            throw new NotFoundException(`Faild: User with username '${userId}' not found.`);
         }
 
         return updatedUser;
