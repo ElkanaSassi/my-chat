@@ -8,6 +8,9 @@ export class Users extends Document {
     @Prop({ unique: true, required: true })
     username: string;
 
+    @Prop({ required: true })
+    password: string;
+
     @Prop({ type: Date, required: true })
     singupData: Date;
 

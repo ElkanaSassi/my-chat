@@ -35,12 +35,12 @@ export class UsersController {
     }
 
     @Patch(':userId')
-    public updateUserByUserName(@Param('userId') userId: Types.ObjectId, @Body() updateUser: Partial<CreateUserDto>) {
+    public updateUserById(@Param('userId') userId: Types.ObjectId, @Body() updateUser: Partial<CreateUserDto>) {
         return this.usersService.updateUserById(userId, updateUser);
     }
 
     @Delete(':userId')
-    public  removeUserByUserName(@Param('userId') userId: Types.ObjectId) {
+    public  removeUserById(@Param('userId') userId: Types.ObjectId) {
         return this.usersService.removeUserById(userId);
     }
 
