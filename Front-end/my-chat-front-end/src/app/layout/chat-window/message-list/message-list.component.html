@@ -2,12 +2,12 @@
   <div
     *ngFor="let message of messages"
     class="message-row"
-    [ngClass]="{ 'mine': message.isMine, 'theirs': !message.isMine }"
+    [ngClass]="{ 'mine': message.from, 'theirs': !message.from }"
   >
     <div class="message-bubble">
-      <div class="sender-name" *ngIf="!message.isMine">{{ message.senderName }}</div>
-      <div class="text">{{ message.text }}</div>
-      <div class="timestamp">{{ message.timestamp }}</div>
+      <div class="sender-name" *ngIf="message.from == userId">{{ message.from }}</div>
+      <div class="text">{{ message.data }}</div>
+      <div class="timestamp">{{ message.dateTime }}</div>
     </div>
   </div>
 </div>

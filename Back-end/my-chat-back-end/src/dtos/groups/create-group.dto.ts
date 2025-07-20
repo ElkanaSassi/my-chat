@@ -1,4 +1,4 @@
-import { ArrayUnique, IsArray, IsDate, IsMongoId, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { ArrayUnique, IsArray, IsDate, IsEmpty, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { Types } from "mongoose";
 
 export class CreateGroupDto {
@@ -16,5 +16,6 @@ export class CreateGroupDto {
     admin: string;
 
     @IsString()
-    description: string;
+    @IsOptional()
+    description?: string;
 }

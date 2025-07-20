@@ -5,7 +5,7 @@ import { Users } from "../users/users.schema";
 @Schema({ _id: false })
 export class Messages {
 
-    @Prop({ unique: true, type: [{ type: Types.ObjectId, ref: 'Users' }] })
+    @Prop({  type: Types.ObjectId, ref: 'Users', required: true })
     from: Users;
 
     @Prop({ type: Date, default: Date.now })

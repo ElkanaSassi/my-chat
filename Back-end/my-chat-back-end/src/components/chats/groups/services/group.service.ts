@@ -22,7 +22,7 @@ export class GroupService {
         this.groupsModel = groupsModel as Model<Groups>;
     }
 
-    public async getGroupsOfUser(userId: Types.ObjectId): Promise<Groups[]> {
+    public async getUserGroups(userId: Types.ObjectId): Promise<Groups[]> {
         const user = await this.usersServices.getUserById(userId);
 
         const userGroups = await this.groupsModel.find({
@@ -47,7 +47,18 @@ export class GroupService {
     }
 
     public async createGroup(createGroupDto: CreateGroupDto): Promise<Groups> {
-        const newGroup = new this.groupsModel(createGroupDto);
+        const membersList = await this.getValidUsers(createGroupDto.membersList);
+
+        const groupComplete = {
+            createdAt: Date.now(),
+            groupName: createGroupDto.groupName,
+            admin: createGroupDto.admin,
+            description: createGroupDto.description ? createGroupDto.description : "" ,
+            membersList: membersList,
+            chatType: Groups.name,
+        }
+
+        const newGroup = new this.groupsModel(groupComplete);
         return newGroup.save();
     }
 

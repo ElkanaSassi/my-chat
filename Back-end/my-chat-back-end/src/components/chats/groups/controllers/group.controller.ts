@@ -11,8 +11,8 @@ export class GroupController {
     constructor(private groupService: GroupService) { }
 
     @Get(':userId')
-    public getGroupsOfUser(@Param('userId') userId: Types.ObjectId): Promise<Groups[]> {
-        return this.groupService.getGroupsOfUser(userId);
+    public getUserGroups(@Param('userId') userId: string): Promise<Groups[]> {
+        return this.groupService.getUserGroups(new Types.ObjectId(userId));
     }
 
     @Get('getUsers/:groupId')
@@ -22,6 +22,7 @@ export class GroupController {
 
     @Post()
     public createNewGroup(@Body() createGroupDto: CreateGroupDto): Promise<Groups> {
+        console.log('got into create group');
         return this.groupService.createGroup(createGroupDto);
     }
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterModule } from "@angular/router";
 
 @Component({
@@ -10,5 +10,10 @@ import { RouterModule } from "@angular/router";
   styleUrl: './sidebar-list.component.css'
 })
 export class SidebarListComponent {
+  @Output() chatSelected = new EventEmitter<string>();
+
+  onChatSelected(chatId: string) {
+    this.chatSelected.emit(chatId);
+  }
 
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpService } from '../../../../core/services/http/httpConnection.service';
 import { FormsModule } from '@angular/forms';
 import { LocalStorageService } from '../../../../core/services/localStorage/localStorage.service';
@@ -21,27 +21,23 @@ interface User {
     styleUrl: './sidebar-contacts-list.component.css'
 })
 export class SidebarContactsListComponent {
+    @Output() chatSelected = new EventEmitter<string>();
 
-    contactsList: string[] = []
+    onChatSelected(chatId: string) {
+        this.chatSelected.emit(chatId);
+    }
+
+    contactsList: string[] = [];
 
     constructor(
-        private httpService: HttpService,
         private localStorage: LocalStorageService,
     ) { }
 
     ngOnInit() {
         const user = this.localStorage.getItem('user');
-        console.log(this.localStorage.getItem('user'));
-        
-        if (user) {
-            this.httpService.get<User>('/users', JSON.parse(user)._id).subscribe({
-                next: (res) => {
-                    this.contactsList = res.contacts;
-                },
-                error: (err) => {
 
-                }
-            });
+        if (user) {
+            this.contactsList = JSON.parse(user).contacts;
         }
     }
     showUsersPool = false;

@@ -6,6 +6,7 @@ import { Dms } from 'src/schemas/chats/dms/dms.schema';
 import { CreateDmDto } from '../../../../dtos/dms/create-dm.dto';
 import { Chats } from 'src/schemas/chats/chats.schema';
 import { difference } from 'lodash';
+import { Messages } from 'src/schemas/messages/messages.schema';
 
 @Injectable()
 export class DmsService {
@@ -51,14 +52,17 @@ export class DmsService {
         return userDms;
     }
 
-    public async getDmMessages(dmId: Types.ObjectId): Promise<Dms> {
-        const dm = await this.dmsModel.findById(dmId)
-            .populate('messages')
-            .exec();
+    public async getDmMessages(dmId: Types.ObjectId): Promise<Messages[]> {
+        // const dm = await this.dmsModel.findById(dmId)
+        //     .populate('messages')
+        //     .exec();
+        const dm = await this.dmsModel.findById(dmId).exec();
+        
+        console.log(dm?.messages);
 
         if (!dm) throw new NotFoundException(`Faild: Couldn't find messages of DM: ${dmId}.`);
 
-        return dm;
+        return dm?.messages;
     }
 
     // Note: maybe make that when user deletes the dm, it will affect only in is cline side. 
