@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import { CreateDmDto } from '../../../../dto/dms/create-dm.dto';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
 import { Messages } from 'src/schemas/messages/messages.schema';
-import { CreateMessageDto } from 'src/dto/messages/create-message.dto';
+import { CreateMessageDto } from '../../../../dto/messages/create-message.dto';
 
 @Controller('dms')
 export class DmsController {

@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UsersService } from 'src/components/users/services/user.service';
-import { LoginDto } from 'src/dto/auth/login.dto';
-import { RegisterDto } from 'src/dto/auth/register.dto';
+import { LoginDto } from '../../../dto/auth/login.dto';
+import { RegisterDto } from '../../../dto/auth/register.dto';
 import { Users } from 'src/schemas/users/users.schema';
 
 @Injectable()

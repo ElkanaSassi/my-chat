@@ -1,13 +1,13 @@
 import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, ObjectId, Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { UsersService } from '../../../users/services/user.service';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
 import { CreateDmDto } from '../../../../dto/dms/create-dm.dto';
 import { Chats } from 'src/schemas/chats/chats.schema';
 import { difference } from 'lodash';
 import { Messages } from 'src/schemas/messages/messages.schema';
-import { CreateMessageDto } from 'src/dto/messages/create-message.dto';
+import { CreateMessageDto } from '../../../../dto/messages/create-message.dto';
 
 @Injectable()
 export class DmsService {

@@ -6,8 +6,6 @@ import {
     Param,
     Patch,
     Post,
-    UsePipes,
-    ValidationPipe
 } from '@nestjs/common';
 import { UsersService } from '../services/user.service';
 import { CreateUserDto } from '../../../dto/users/create-user.dto';
