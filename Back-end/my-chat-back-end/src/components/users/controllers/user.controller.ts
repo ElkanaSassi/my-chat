@@ -10,8 +10,8 @@ import {
     ValidationPipe
 } from '@nestjs/common';
 import { UsersService } from '../services/user.service';
-import { CreateUserDto } from '../../../dtos/users/create-user.dto';
-import { AddContactsDto } from '../../../dtos/users/add-contacts.dto';
+import { CreateUserDto } from '../../../dto/users/create-user.dto';
+import { AddContactsDto } from '../../../dto/users/add-contacts.dto';
 import { Users } from 'src/schemas/users/users.schema';
 import { Types } from 'mongoose';
 

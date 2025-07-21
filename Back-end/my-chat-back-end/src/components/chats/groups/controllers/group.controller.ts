@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { AddOrRemoveUsersDto } from 'src/dtos/groups/add-users.dto';
-import { CreateGroupDto } from 'src/dtos/groups/create-group.dto';
+import { AddOrRemoveUsersDto } from 'src/dto/groups/add-users.dto';
+import { CreateGroupDto } from 'src/dto/groups/create-group.dto';
 import { GroupService } from 'src/components/chats/groups/services/group.service';
 import { Groups } from 'src/schemas/chats/groups/groups.schema';
 import { Users } from 'src/schemas/users/users.schema';
+import { CreateMessageDto } from 'src/dto/messages/create-message.dto';
 
 @Controller('groups')
 export class GroupController {
@@ -24,6 +25,11 @@ export class GroupController {
     public createNewGroup(@Body() createGroupDto: CreateGroupDto): Promise<Groups> {
         console.log('got into create group');
         return this.groupService.createGroup(createGroupDto);
+    }
+
+    @Post('messages/:groupId')
+    public createMessage(@Param('groupId') groupId: string, @Body() createMessageDto: CreateMessageDto) {
+        return this.groupService.createMessage(new Types.ObjectId(groupId), createMessageDto);
     }
 
     @Patch('addUsersToGroup/:groupId')

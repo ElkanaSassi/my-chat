@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Messages } from 'src/schemas/messages/messages.schema';
-import { CreateMessageDto } from '../../../../dtos/messages/create-message.dto';
+import { CreateMessageDto } from '../../../../dto/messages/create-message.dto';
 import { UsersService } from 'src/components/users/services/user.service';
 import { Users } from 'src/schemas/users/users.schema';
-import { UpdateMessageDto } from '../../../../dtos/messages/update-message.dto';
+import { UpdateMessageDto } from '../../../../dto/messages/update-message.dto';
 
 @Injectable()
 export class MessagesServices {
@@ -13,20 +13,17 @@ export class MessagesServices {
         private usersServices: UsersService
     ) { }
 
-    public async createMessage(createMessageDto: CreateMessageDto)
-    // : Promise<Messages> 
+    public async createMessage(createMessageDto: CreateMessageDto): Promise<Messages>
     {
         const { from, data } = createMessageDto;
         const user = await this.usersServices.getUserByUserName(from);
 
-        const messageComplete = {
-            from: user._id,
-            timeDate: new Date(),
+        const messageComplete: Messages = {
+            from: user.username,
+            dateTime: new Date(),
             data: data,
         }
-
-        //const newMessage = new this.messagesModel(messageComplete);
-        //return await newMessage.save();
+        return messageComplete;
     }
 
     public async deleteMessage(messageId: Types.ObjectId)

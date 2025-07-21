@@ -2,8 +2,8 @@ import { Injectable, NotFoundException, PreconditionFailedException } from '@nes
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Users } from 'src/schemas/users/users.schema';
-import { CreateUserDto } from '../../../dtos/users/create-user.dto';
-import { AddContactsDto } from '../../../dtos/users/add-contacts.dto';
+import { CreateUserDto } from '../../../dto/users/create-user.dto';
+import { AddContactsDto } from '../../../dto/users/add-contacts.dto';
 import { contains } from 'class-validator';
 
 @Injectable()

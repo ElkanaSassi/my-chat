@@ -1,10 +1,5 @@
-<!-- <div class="message-input-container">
-    <div class="message-input-wrapper">
-        <input type="text" id="message" placeholder="Type a message" />
-    </div>
-</div> -->
 
-<div class="message-input">
+<div class="message-input" *ngIf="currentChat">
   <input type="text" [(ngModel)]="messageText" placeholder="Type a message..." />
   <button (click)="sendMessage()">Send</button>
 </div>

@@ -3,11 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, ObjectId, Types } from 'mongoose';
 import { UsersService } from '../../../users/services/user.service';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
-import { CreateDmDto } from '../../../../dtos/dms/create-dm.dto';
+import { CreateDmDto } from '../../../../dto/dms/create-dm.dto';
 import { Chats } from 'src/schemas/chats/chats.schema';
 import { difference } from 'lodash';
 import { Messages } from 'src/schemas/messages/messages.schema';
-import { CreateMessageDto } from 'src/dtos/messages/create-message.dto';
+import { CreateMessageDto } from 'src/dto/messages/create-message.dto';
 
 @Injectable()
 export class DmsService {
@@ -41,7 +41,7 @@ export class DmsService {
 
     public async getUserDms(username: string): Promise<Dms[]> {
         const user = await this.usersServices.getUserByUserName(username);
- 
+
         const userDms = await this.dmsModel.find({
             membersList: { $in: [user._id] }
         });
@@ -55,6 +55,9 @@ export class DmsService {
 
     public async createMessage(dmId: Types.ObjectId, createMessageDto: CreateMessageDto) {
         const dm = await this.dmsModel.findById(dmId).exec();
+        if (!dm) {
+            throw new NotFoundException(`Failed: Couldn't find DM with Id: ${dmId}`);
+        }
 
         const completeMessage: Messages = {
             from: createMessageDto.from,
@@ -62,25 +65,19 @@ export class DmsService {
             data: createMessageDto.data,
         }
 
-        dm?.messages.push(completeMessage);
-        await dm?.save();
-        return dm?.messages;
+        dm.messages.push(completeMessage);
+        await dm.save();
+
+        return dm.messages;
     }
 
     public async getDmMessages(dmId: Types.ObjectId): Promise<Messages[]> {
-        // const dm = await this.dmsModel.findById(dmId)
-        //     .populate('messages')
-        //     .exec();
         const dm = await this.dmsModel.findById(dmId).exec();
-
-        if (!dm) throw new NotFoundException(`Faild: Couldn't find messages of DM: ${dmId}.`);
-
-        for (let msg of dm?.messages) {
-            const user = await this.usersServices.getUserById(new Types.ObjectId(msg.from));
-            msg.from = user.username;
+        if (!dm) {
+            throw new NotFoundException(`Faild: Couldn't find messages of DM: ${dmId}.`);
         }
 
-        return dm?.messages;
+        return dm.messages;
     }
 
     // Note: maybe make that when user deletes the dm, it will affect only in is cline side. 

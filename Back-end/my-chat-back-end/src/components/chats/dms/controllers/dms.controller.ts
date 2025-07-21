@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DmsService } from '../services/dms.service';
 import { Types } from 'mongoose';
-import { CreateDmDto } from '../../../../dtos/dms/create-dm.dto';
+import { CreateDmDto } from '../../../../dto/dms/create-dm.dto';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
 import { Messages } from 'src/schemas/messages/messages.schema';
-import { CreateMessageDto } from 'src/dtos/messages/create-message.dto';
+import { CreateMessageDto } from 'src/dto/messages/create-message.dto';
 
 @Controller('dms')
 export class DmsController {
