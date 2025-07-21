@@ -28,7 +28,7 @@ export class GroupService {
         const userGroups = await this.groupsModel.find({
             membersList: {
                 $in: [
-                    user._id,
+                    // user._id,
                 ]
             }
         }).exec();

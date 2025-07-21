@@ -5,6 +5,7 @@ import { MessageInputComponent } from "./message-input/message-input.component";
 import { Subscription } from 'rxjs';
 import { ChatSelectionService } from '../chat-selection.service';
 import { HttpService } from '../../core/services/http/httpConnection.service';
+import { LocalStorageService } from '../../core/services/localStorage/localStorage.service';
 
 
 export interface Message {
@@ -20,6 +21,28 @@ export interface Message {
     styleUrl: './chat-window.component.css'
 })
 export class ChatWindowComponent {
+    
+    username: string;
+    private sub: Subscription;
+    currentChatId: string;
+
+    
+    constructor(
+
+        private chatSelectionService: ChatSelectionService,
+        private localStorage: LocalStorageService,
+    ) { }
+
+    ngOnInit() {
+        const u = this.localStorage.getItem('user');
+        this.username = JSON.parse(u as string).username;
+
+        this.sub = this.chatSelectionService.getSelectedChat().subscribe(chatId => {
+            if (chatId) {
+                this.currentChatId = chatId;
+            }
+        });
+    }
     
 
 }

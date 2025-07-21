@@ -15,7 +15,7 @@ export class Users extends Document {
     singupData: Date;
 
     @Prop({ type: [{ type: Types.ObjectId, ref: 'Users' }], default: [] })
-    contacts: Types.ObjectId[];
+    contacts: Users[];
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users); 

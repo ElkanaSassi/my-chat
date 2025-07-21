@@ -7,6 +7,7 @@ import { CreateDmDto } from '../../../../dtos/dms/create-dm.dto';
 import { Chats } from 'src/schemas/chats/chats.schema';
 import { difference } from 'lodash';
 import { Messages } from 'src/schemas/messages/messages.schema';
+import { CreateMessageDto } from 'src/dtos/messages/create-message.dto';
 
 @Injectable()
 export class DmsService {
@@ -42,7 +43,7 @@ export class DmsService {
         const user = await this.usersServices.getUserById(userId);
 
         const userDms = await this.dmsModel.find({
-            membersList: { $in: [user._id] }
+            //membersList: { $in: [user._id] }
         });
 
         if (userDms.length === 0) {
@@ -52,15 +53,32 @@ export class DmsService {
         return userDms;
     }
 
+    public async createMessage(dmId: Types.ObjectId, createMessageDto: CreateMessageDto) {
+        const dm = await this.dmsModel.findById(dmId).exec();
+
+        const completeMessage: Messages = {
+            from: createMessageDto.from,
+            dateTime: new Date(),
+            data: createMessageDto.data,
+        }
+
+        dm?.messages.push(completeMessage);
+        await dm?.save();
+        return dm?.messages;
+    }
+
     public async getDmMessages(dmId: Types.ObjectId): Promise<Messages[]> {
         // const dm = await this.dmsModel.findById(dmId)
         //     .populate('messages')
         //     .exec();
         const dm = await this.dmsModel.findById(dmId).exec();
-        
-        console.log(dm?.messages);
 
         if (!dm) throw new NotFoundException(`Faild: Couldn't find messages of DM: ${dmId}.`);
+
+        for (let msg of dm?.messages) {
+            const user = await this.usersServices.getUserById(new Types.ObjectId(msg.from));
+            msg.from = user.username;
+        }
 
         return dm?.messages;
     }

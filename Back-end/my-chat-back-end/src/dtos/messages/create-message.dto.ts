@@ -3,9 +3,9 @@ import { Types } from "mongoose";
 
 export class CreateMessageDto {
 
-    @IsMongoId({ each: true })
+    @IsString()
     @IsNotEmpty()
-    from: Types.ObjectId;
+    from: string;
 
     @IsNotEmpty()
     @IsString()

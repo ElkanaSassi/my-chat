@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import { CreateDmDto } from '../../../../dtos/dms/create-dm.dto';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
 import { Messages } from 'src/schemas/messages/messages.schema';
+import { CreateMessageDto } from 'src/dtos/messages/create-message.dto';
 
 @Controller('dms')
 export class DmsController {
@@ -18,6 +19,11 @@ export class DmsController {
     public getUserDms(@Param('userId') userId: string): Promise<Dms[]> {
         console.log(userId);
         return this.dmsServies.getUserDms(new Types.ObjectId(userId));
+    }
+
+    @Post('messages/:dmId')
+    public createMessage(@Param('dmId') dmId: string , @Body() createMessageDto: CreateMessageDto) {
+        return this.dmsServies.createMessage(new Types.ObjectId(dmId), createMessageDto);
     }
 
     @Get('messages/:dmId')

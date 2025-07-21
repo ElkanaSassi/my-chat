@@ -42,7 +42,7 @@ export class LoginComponent {
         
         this.authService.login(login).subscribe({
             next: (res) => {
-                console.log(res);
+                console.log('login res: ',res);
                 this.localStorage.setItem('user', JSON.stringify(res));
                 this.router.navigate(['/layout']);
             },

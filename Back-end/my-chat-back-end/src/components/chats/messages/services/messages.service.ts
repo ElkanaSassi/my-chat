@@ -17,7 +17,7 @@ export class MessagesServices {
     // : Promise<Messages> 
     {
         const { from, data } = createMessageDto;
-        const user = await this.usersServices.getUserById(from);
+        const user = await this.usersServices.getUserByUserName(from);
 
         const messageComplete = {
             from: user._id,

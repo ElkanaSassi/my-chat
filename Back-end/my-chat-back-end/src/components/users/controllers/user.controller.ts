@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../services/user.service';
 import { CreateUserDto } from '../../../dtos/users/create-user.dto';
-import { ContactsDto } from '../../../dtos/users/add-contacts.dto';
+import { AddContactsDto } from '../../../dtos/users/add-contacts.dto';
 import { Users } from 'src/schemas/users/users.schema';
 import { Types } from 'mongoose';
 
@@ -20,12 +20,12 @@ export class UsersController {
     constructor(private usersService: UsersService) { }
 
     @Get()
-    public getAll(): Promise<Users[]> {
+    public getAll(): Promise<string[]> {
         return this.usersService.getAllUsers();
     }
 
     @Get(':userId')
-    public getUser(@Param('userId') userId: Types.ObjectId) {
+    public getUser(@Param('userId') userId: Types.ObjectId): Promise<Users> {
         return this.usersService.getUserById(userId);
     }
 
@@ -40,17 +40,18 @@ export class UsersController {
     }
 
     @Delete(':userId')
-    public  removeUserById(@Param('userId') userId: Types.ObjectId) {
+    public removeUserById(@Param('userId') userId: Types.ObjectId) {
         return this.usersService.removeUserById(userId);
     }
 
-    @Patch('addContacts/:userId')
-    public addContacts(@Param('userId') userId: Types.ObjectId, @Body() addContactsDto: ContactsDto) {
-        return this.usersService.addContactsToUser(userId, addContactsDto);
+    @Patch('addContacts/:username')
+    public addContacts(@Param('username') username: string, @Body() addContactDto: AddContactsDto): Promise<string[]> {
+        console.log('hello from add contact');
+        return this.usersService.addContactToUser(username, addContactDto);
     }
 
     @Delete('removeContacts/:userId')
-    public removeContacts(@Param('userId') userId: Types.ObjectId, @Body() removeContactsDto: ContactsDto) {
-        return this.usersService.removeContactsFromUser(userId, removeContactsDto);
+    public removeContacts(@Param('userId') userId: Types.ObjectId, @Body() removeContactDto: AddContactsDto) {
+        return this.usersService.removeContactFromUser(userId, removeContactDto);
     }
 }

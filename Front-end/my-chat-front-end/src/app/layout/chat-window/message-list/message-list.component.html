@@ -2,10 +2,10 @@
   <div
     *ngFor="let message of messages"
     class="message-row"
-    [ngClass]="{ 'mine': message.from, 'theirs': !message.from }"
+    [ngClass]="{ 'mine': (message.from == username), 'theirs': !(message.from == username) }"
   >
     <div class="message-bubble">
-      <div class="sender-name" *ngIf="message.from == userId">{{ message.from }}</div>
+      <div class="sender-name" *ngIf="message.from">{{ message.from }}</div>
       <div class="text">{{ message.data }}</div>
       <div class="timestamp">{{ message.dateTime }}</div>
     </div>

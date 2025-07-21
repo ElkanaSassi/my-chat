@@ -1,11 +1,8 @@
-import { ArrayUnique, IsArray, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { Types } from "mongoose";
+import { IsNotEmpty, IsString } from "class-validator";
 
-export class ContactsDto {
+export class AddContactsDto {
 
-    @IsOptional()
-    @IsArray()
-    @ArrayUnique()
-    @IsMongoId({ each: true })
-    contacts: Types.ObjectId[];
+    @IsString()
+    @IsNotEmpty()
+    contact: string;
 }

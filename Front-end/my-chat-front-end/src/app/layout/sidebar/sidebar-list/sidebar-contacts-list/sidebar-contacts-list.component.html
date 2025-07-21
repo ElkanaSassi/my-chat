@@ -24,7 +24,7 @@
 
   <ul class="users-list">
     <li *ngFor="let user of availableUsers" class="user-item">
-      <span>{{ user.name }}</span>
+      <span>{{ user }}</span>
       <button class="add-btn" (click)="onAddUser(user)">Add</button>
     </li>
   </ul>

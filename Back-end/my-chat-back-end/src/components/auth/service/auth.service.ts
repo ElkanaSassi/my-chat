@@ -22,13 +22,18 @@ export class AuthService {
         return this.userService.createUser(registerDto);
     }
 
-    async login(loginDto: LoginDto): Promise<Users> {
+    async login(loginDto: LoginDto) {
         const user = await this.userService.getUserByUserName(loginDto.username);
         if (user.username != loginDto.username || user.password != loginDto.password) {
             throw new BadRequestException('Faild to login: Username or Password are worng.');
         }
 
-        return user;
+        const userToReturn = {
+            username: user.username,
+            contacts: user.contacts.map(contact => contact.username),
+        }
+        console.log(userToReturn);
+        return userToReturn;
     }
 
 }
