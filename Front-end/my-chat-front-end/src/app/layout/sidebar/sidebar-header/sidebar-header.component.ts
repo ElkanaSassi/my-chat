@@ -18,11 +18,11 @@ export class SidebarHeaderComponent {
     ) { }
 
     goToChats() {
-        this.router.navigateByUrl('/sidebar/chats', { skipLocationChange: true });
+        this.router.navigate(['/layout/sidebar/chats'], { skipLocationChange: true });
     }
 
     goToContacts() {
-        this.router.navigateByUrl('/sidebar/contacts', { skipLocationChange: true });
+        this.router.navigate(['/layout/sidebar/contacts'], { skipLocationChange: true });
     }
 
     onLogOut() {

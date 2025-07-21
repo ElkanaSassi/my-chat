@@ -44,7 +44,7 @@ export class LoginComponent {
             next: (res) => {
                 console.log('login res: ',res);
                 this.localStorage.setItem('user', JSON.stringify(res));
-                this.router.navigate(['/layout']);
+                this.router.navigate(['/layout/sidebar/chats']);
             },
             error: (err) => {
                 this.isLoginSuccessful = false;

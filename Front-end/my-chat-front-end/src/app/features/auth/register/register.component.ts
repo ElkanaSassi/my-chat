@@ -38,7 +38,7 @@ export class RegisterComponent {
         this.authService.register(register).subscribe({
             next: (res) => {
                 this.localStorage.setItem('user', JSON.stringify(res.user));
-                this.router.navigate(['/layout']);
+                this.router.navigate(['/layout/sidebar/chats']);
             },
             error: (err) => {
                 this.isRegisterSuccessful = false;
