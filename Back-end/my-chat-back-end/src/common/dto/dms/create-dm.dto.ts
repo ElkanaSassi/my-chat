@@ -3,9 +3,8 @@ import { Types } from 'mongoose';
 
 export class CreateDmDto {
     @IsArray()
-    @IsMongoId({ each: true })
     @ArrayMaxSize(2)
     @IsNotEmpty()
-    membersList: Types.ObjectId[];
+    membersList: string[];
 
 }

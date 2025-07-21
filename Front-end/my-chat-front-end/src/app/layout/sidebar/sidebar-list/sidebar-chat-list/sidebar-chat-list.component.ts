@@ -3,10 +3,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpService } from '../../../../core/services/http/httpConnection.service';
 import { LocalStorageService } from '../../../../core/services/localStorage/localStorage.service';
 import { ChatSelectionService } from '../../../chat-selection.service';
-import { Chat } from '../../../../shared/types/chat.type';
-import { UserInfo } from '../../../../shared/types/user.type';
-import { Dm } from '../../../../shared/types/dm.type';
-import { Group } from '../../../../shared/types/group.type';
+import { ChatRo } from '../../../../common/ro/chats/chats.type';
+import { UserInfoRo } from '../../../../common/ro/users/userInfo.ro';
+import { DmRo } from '../../../../common/ro/dms/dms.ro';
+import { GroupRo } from '../../../../common/ro/groups/groups.ro';
 
 @Component({
     selector: 'app-sidebar-chat-list',
@@ -16,9 +16,9 @@ import { Group } from '../../../../shared/types/group.type';
     styleUrl: './sidebar-chat-list.component.css'
 })
 export class SidebarChatListComponent {
-    chats: Chat[] = [];
+    chats: ChatRo[] = [];
     @Output() messages = new EventEmitter<string>;
-    private user: UserInfo;
+    private user: UserInfoRo;
 
     constructor(
         private httpService: HttpService,
@@ -32,14 +32,14 @@ export class SidebarChatListComponent {
             this.user = JSON.parse(user);
             const userId = JSON.parse(user).username;
 
-            this.httpService.get<Dm[]>(`dms/${userId}`).subscribe({
+            this.httpService.get<DmRo[]>(`dms/${userId}`).subscribe({
                 next: (res) => {
                     this.chats = res.map(dm => dm);
                 },
                 error: (err) => { }
             });
 
-            this.httpService.get<Group[]>(`groups/${userId}`).subscribe({
+            this.httpService.get<GroupRo[]>(`groups/${userId}`).subscribe({
                 next: (res) => {
                     this.chats.push(...res.map(group => group));
                 },
@@ -48,13 +48,13 @@ export class SidebarChatListComponent {
         }
     }
 
-    onChatClicked(chat: Chat) {
+    onChatClicked(chat: ChatRo) {
         this.chatSelectionService.setSelectedChat(chat);
     }
 
-    chatName(chatId: Chat): string {
+    chatName(chatId: ChatRo): string {
         if (chatId.chatType === 'Groups') {
-            return (chatId as Group).groupName;
+            return (chatId as GroupRo).groupName;
         }
         else {
             return this.user.username === chatId.membersList[0]

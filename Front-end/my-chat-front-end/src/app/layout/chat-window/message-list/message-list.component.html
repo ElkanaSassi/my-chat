@@ -1,6 +1,6 @@
-<div class="messages-list">
+<div class="messages-list" *ngIf="currentChatId && messages">
   <div
-    *ngFor="let message of messages"
+    *ngFor="let message of messages.messagesList"
     class="message-row"
     [ngClass]="{ 'mine': (message.from == username), 'theirs': !(message.from == username) }"
   >

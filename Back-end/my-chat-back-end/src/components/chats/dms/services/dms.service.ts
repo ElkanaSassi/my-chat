@@ -3,11 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { UsersService } from '../../../users/services/user.service';
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
-import { CreateDmDto } from '../../../../dto/dms/create-dm.dto';
+import { CreateDmDto } from '../../../../common/dto/dms/create-dm.dto';
 import { Chats } from 'src/schemas/chats/chats.schema';
 import { difference } from 'lodash';
 import { Messages } from 'src/schemas/messages/messages.schema';
-import { CreateMessageDto } from '../../../../dto/messages/create-message.dto';
+import { CreateMessageDto } from '../../../../common/dto/messages/create-message.dto';
+import { DmRo } from 'src/common/ro/dms/dms.ro';
+import { MessagesRo } from 'src/common/ro/messages/messages.ro';
 
 @Injectable()
 export class DmsService {
@@ -22,24 +24,35 @@ export class DmsService {
         this.dmsModel = dmsModel as Model<Dms>;
     }
 
-    public async createDm(createDmDto: CreateDmDto): Promise<Dms> {
+    public async createDm(createDmDto: CreateDmDto): Promise<DmRo> {
         if (createDmDto.membersList.length != 2) {
             throw new NotAcceptableException('Members Error: the amount of members aren\'t two.');
         }
 
-        const userOne = await this.usersServices.getUserById(createDmDto.membersList[0]);
-        const userTwo = await this.usersServices.getUserById(createDmDto.membersList[1]);
+        const userOne = await this.usersServices.getUserByUserName(createDmDto.membersList[0]);
+        const userTwo = await this.usersServices.getUserByUserName(createDmDto.membersList[1]);
 
         const dmComplete = {
-            membersList: [userOne, userTwo],
+            membersList: [userOne._id, userTwo._id],
             chatType: Dms.name,
         }
-
         const newDm = new this.dmsModel(dmComplete);
-        return newDm.save();
+        await newDm.save();
+
+        return this.buildDmRo(newDm);
     }
 
-    public async getUserDms(username: string): Promise<Dms[]> {
+    public async getDm(dmId: Types.ObjectId): Promise<DmRo> {
+        const dm = await this.dmsModel.findById(dmId).exec();
+
+        if (!dm) {
+            throw new NotFoundException(`Failed: Couldn't find dm: ${dmId}`);
+        }
+
+        return this.buildDmRo(dm);
+    }
+
+    public async getUserDms(username: string): Promise<DmRo[]> {
         const user = await this.usersServices.getUserByUserName(username);
 
         const userDms = await this.dmsModel.find({
@@ -50,10 +63,10 @@ export class DmsService {
             throw new NotFoundException(`Failed: Couldn't find DMs of user: ${user.username}.`);
         }
 
-        return userDms;
+        return Promise.all(userDms.map(async dm => await this.buildDmRo(dm)));
     }
 
-    public async createMessage(dmId: Types.ObjectId, createMessageDto: CreateMessageDto) {
+    public async createMessage(dmId: Types.ObjectId, createMessageDto: CreateMessageDto): Promise<Messages> {
         const dm = await this.dmsModel.findById(dmId).exec();
         if (!dm) {
             throw new NotFoundException(`Failed: Couldn't find DM with Id: ${dmId}`);
@@ -68,16 +81,18 @@ export class DmsService {
         dm.messages.push(completeMessage);
         await dm.save();
 
-        return dm.messages;
+        return completeMessage;
     }
 
-    public async getDmMessages(dmId: Types.ObjectId): Promise<Messages[]> {
+    public async getDmMessages(dmId: Types.ObjectId): Promise<MessagesRo> {
         const dm = await this.dmsModel.findById(dmId).exec();
         if (!dm) {
             throw new NotFoundException(`Faild: Couldn't find messages of DM: ${dmId}.`);
         }
-
-        return dm.messages;
+        const messagesToReturn: MessagesRo = {
+            messagesList: dm.messages
+        } 
+        return messagesToReturn;
     }
 
     // Note: maybe make that when user deletes the dm, it will affect only in is cline side. 
@@ -94,6 +109,23 @@ export class DmsService {
         userOldDm.membersList = difference(userOldDm.membersList, userId);
 
         return userOldDm.save();
+    }
+
+    private async buildDmRo(dm: Dms & { _id: Types.ObjectId; }): Promise<DmRo> {
+        const usernames = await Promise.all(
+            dm.membersList.map(
+                async (m) => (await this.usersServices.getUserById(m)).username
+            )
+        );
+
+        const dmToReturn: DmRo = {
+            _id: dm._id.toString(),
+            chatType: DmRo.name,
+            membersList: usernames,
+            messages: dm.messages,
+            createAt: dm.createAt
+        }
+        return dmToReturn;
     }
 
 

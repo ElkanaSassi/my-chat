@@ -1,15 +1,18 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
-import { AddOrRemoveUsersDto } from '../../../../dto/groups/add-users.dto';
-import { CreateGroupDto } from '../../../../dto/groups/create-group.dto';
+import { Document, Model, Types } from 'mongoose';
+import { AddOrRemoveUsersDto } from '../../../../common/dto/groups/add-users.dto';
+import { CreateGroupDto } from '../../../../common/dto/groups/create-group.dto';
 import { Groups } from 'src/schemas/chats/groups/groups.schema';
-import { union, difference } from 'lodash';
 import { UsersService } from 'src/components/users/services/user.service';
 import { Chats } from 'src/schemas/chats/chats.schema';
 import { Users } from 'src/schemas/users/users.schema';
-import { CreateMessageDto } from '../../../../dto/messages/create-message.dto';
+import { CreateMessageDto } from '../../../../common/dto/messages/create-message.dto';
 import { Messages } from 'src/schemas/messages/messages.schema';
+import { GroupRo } from 'src/common/ro/groups/groups.ro';
+import { group } from 'console';
+import { UserInfo } from 'os';
+import { UserInfoRo } from 'src/common/ro/users/userInfo.ro';
 
 @Injectable()
 export class GroupService {
@@ -24,7 +27,7 @@ export class GroupService {
         this.groupsModel = groupsModel as Model<Groups>;
     }
 
-    public async getUserGroups(username: string): Promise<Groups[]> {
+    public async getUserGroups(username: string): Promise<GroupRo[]> {
         const user = await this.usersServices.getUserByUserName(username);
 
         const userGroups = await this.groupsModel.find({
@@ -35,19 +38,23 @@ export class GroupService {
             throw new NotFoundException(`Failed: Couldn't find GroupsS of user: ${user.username}.`);
         }
 
-        return userGroups;
+        return Promise.all(userGroups.map(async userGroup => await this.buildGroupRo(userGroup)));
     }
 
-    public async getUsersInGroup(groupId: Types.ObjectId): Promise<Users[]> {
+    public async getUsersInGroup(groupId: Types.ObjectId): Promise<string[]> {
         const group = await this.groupsModel.findById(groupId).exec();
         if (!group) {
             throw new NotFoundException(`Invalid Group Id: Group with Id: ${groupId} was not found!`);
         }
-
-        return group.membersList;
+        const groupMembers = await Promise.all(
+            group.membersList.map(
+                async (m) => (await this.usersServices.getUserById(m)).username
+            )
+        );
+        return groupMembers;
     }
 
-    public async createGroup(createGroupDto: CreateGroupDto): Promise<Groups> {
+    public async createGroup(createGroupDto: CreateGroupDto): Promise<GroupRo> {
         const membersList = await this.getValidUsers(createGroupDto.membersList);
 
         const groupComplete = {
@@ -60,13 +67,15 @@ export class GroupService {
         }
 
         const newGroup = new this.groupsModel(groupComplete);
-        return newGroup.save();
+        await newGroup.save();
+
+        return this.buildGroupRo(newGroup);
     }
 
-    public async createMessage(groupId: Types.ObjectId, createMessageDto: CreateMessageDto) {
+    public async createMessage(groupId: Types.ObjectId, createMessageDto: CreateMessageDto): Promise<Messages[]> {
         const group = await this.groupsModel.findById(groupId).exec();
         if (!group) {
-            throw new NotFoundException(`Failed: Couldn't find DM with Id: ${groupId}`);
+            throw new NotFoundException(`Failed: Couldn't find Group with Id: ${groupId}`);
         }
 
         const completeMessage: Messages = {
@@ -81,7 +90,7 @@ export class GroupService {
         return group.messages;
     }
 
-    public async addUsersToGroup(groupId: Types.ObjectId, addUsersDto: AddOrRemoveUsersDto): Promise<Groups> {
+    public async addUsersToGroup(groupId: Types.ObjectId, addUsersDto: AddOrRemoveUsersDto): Promise<GroupRo> {
         const usersToAdd = await this.getValidUsers(addUsersDto.membersList);
 
         const updatedGroup = await this.groupsModel.findByIdAndUpdate(
@@ -94,10 +103,10 @@ export class GroupService {
             throw new NotFoundException(`Invalid Group Id: Group with Id: ${groupId} was not found!`);
         }
 
-        return updatedGroup;
+        return this.buildGroupRo(updatedGroup);
     }
 
-    public async removeUserFromGroup(groupId: Types.ObjectId, removeUserDto: AddOrRemoveUsersDto): Promise<Groups> {
+    public async removeUserFromGroup(groupId: Types.ObjectId, removeUserDto: AddOrRemoveUsersDto): Promise<GroupRo> {
         const usersToRemove = await this.getValidUsers(removeUserDto.membersList);
 
         const updatedGroup = await this.groupsModel.findByIdAndUpdate(
@@ -110,7 +119,7 @@ export class GroupService {
             throw new NotFoundException(`Invalid Group Id: Group with Id: ${groupId} was not found!`);
         }
 
-        return updatedGroup;
+        return this.buildGroupRo(updatedGroup);
     }
 
     private async getValidUsers(membersList: Types.ObjectId[]): Promise<Users[]> {
@@ -125,4 +134,26 @@ export class GroupService {
 
         return ActiveMembersList;
     }
+
+    private async buildGroupRo(group: Groups & { _id: Types.ObjectId; }): Promise<GroupRo> {
+
+        const usernames = await Promise.all(
+            group.membersList.map(
+                async (m) => (await this.usersServices.getUserById(m)).username
+            )
+        );
+
+        const groupToReturn: GroupRo = {
+            _id: group._id.toString(),
+            chatType: Groups.name,
+            membersList: usernames,
+            messages: group.messages,
+            createAt: group.createAt,
+            groupName: group.groupName,
+            admin: group.admin.username,
+            discription: group.description
+        }
+        return groupToReturn;
+    }
+
 }

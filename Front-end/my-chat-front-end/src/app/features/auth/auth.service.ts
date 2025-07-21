@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../../core/services/http/httpConnection.service';
 import { Observable } from 'rxjs';
-import { UserInfo } from '../../shared/types/user.type';
+import { UserInfoRo } from '../../common/ro/users/userInfo.ro';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private userInfo: UserInfo;
+    private userInfo: UserInfoRo;
     constructor(private httpService: HttpService) {
         this.loadUserFromStorage();
     }

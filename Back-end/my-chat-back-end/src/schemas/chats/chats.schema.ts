@@ -14,7 +14,7 @@ export class Chats {
     createAt: Date;
 
     @Prop({ type: [{ type: Types.ObjectId, ref: 'Users' }], default: [] })
-    membersList: Users[];
+    membersList: Types.ObjectId[];
 
     @Prop({ type: [Messages], default: [] })
     messages: Messages[];

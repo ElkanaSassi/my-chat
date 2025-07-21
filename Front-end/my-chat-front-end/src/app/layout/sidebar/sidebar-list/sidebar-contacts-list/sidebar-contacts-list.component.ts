@@ -4,6 +4,7 @@ import { HttpService } from '../../../../core/services/http/httpConnection.servi
 import { FormsModule } from '@angular/forms';
 import { LocalStorageService } from '../../../../core/services/localStorage/localStorage.service';
 import { difference } from 'lodash';
+import { CreateDmDto } from '../../../../common/dto/dms/create-dm.dto';
 
 @Component({
     selector: 'app-sidebar-contacts-list',
@@ -49,10 +50,9 @@ export class SidebarContactsListComponent {
 
     onAddUser(contact: string) {
         const user = this.localStorage.getItem('user');
-        if (!user) {
-            return;
-        }
-        this.httpService.patch(`users/addContacts/${JSON.parse(user).username}`, { "contact": contact })
+        const username = JSON.parse(user!).username;
+
+        this.httpService.patch(`users/addContacts/${username}`, { "contact": contact })
             .subscribe({
                 next: (res) => {
                     this.availableUsers = this.availableUsers.filter(u => u !== contact);
@@ -62,5 +62,10 @@ export class SidebarContactsListComponent {
 
                 }
             });
+
+        const newDm: CreateDmDto = {
+            membersList: [username, contact]
+        } 
+        this.httpService.post(`dms`,newDm).subscribe();
     }
 }

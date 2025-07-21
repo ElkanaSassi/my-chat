@@ -8,8 +8,8 @@ import {
     Post,
 } from '@nestjs/common';
 import { UsersService } from '../services/user.service';
-import { CreateUserDto } from '../../../dto/users/create-user.dto';
-import { AddContactsDto } from '../../../dto/users/add-contacts.dto';
+import { CreateUserDto } from '../../../common/dto/users/create-user.dto';
+import { AddContactsDto } from '../../../common/dto/users/add-contacts.dto';
 import { Users } from 'src/schemas/users/users.schema';
 import { Types } from 'mongoose';
 
@@ -44,7 +44,6 @@ export class UsersController {
 
     @Patch('addContacts/:username')
     public addContacts(@Param('username') username: string, @Body() addContactDto: AddContactsDto): Promise<string[]> {
-        console.log('hello from add contact');
         return this.usersService.addContactToUser(username, addContactDto);
     }
 

@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Chat } from '../shared/types/chat.type';
+import { ChatRo } from '../common/ro/chats/chats.type';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({ providedIn: 'root' })
 export class ChatSelectionService {
-  private selectedChat$ = new BehaviorSubject<Chat | null>(null);
+    private selectedChat$ = new BehaviorSubject<ChatRo | null>(null);
 
-  setSelectedChat(chat: Chat) {
-    this.selectedChat$.next(chat);
-  }
+    constructor(private socket: Socket) { }
 
-  getSelectedChat() {
-    return this.selectedChat$.asObservable();
-  }
+    setSelectedChat(chat: ChatRo) {
+        this.socket.emit('joinDm', chat._id);
+        this.selectedChat$.next(chat);
+    }
+
+    getSelectedChat() {
+        return this.selectedChat$.asObservable();
+    }
 }

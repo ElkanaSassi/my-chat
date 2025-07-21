@@ -2,8 +2,9 @@ import { Injectable, NotFoundException, PreconditionFailedException } from '@nes
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Users } from 'src/schemas/users/users.schema';
-import { CreateUserDto } from '../../../dto/users/create-user.dto';
-import { AddContactsDto } from '../../../dto/users/add-contacts.dto';
+import { CreateUserDto } from '../../../common/dto/users/create-user.dto';
+import { AddContactsDto } from '../../../common/dto/users/add-contacts.dto';
+import { UserInfoRo } from 'src/common/ro/users/userInfo.ro';
 
 @Injectable()
 export class UsersService {
@@ -43,14 +44,21 @@ export class UsersService {
         return user;
     }
 
-    public async createUser(createUserDto: CreateUserDto): Promise<Users> {
+    public async createUser(createUserDto: CreateUserDto): Promise<UserInfoRo> {
         const newCompleteUser = {
             username: createUserDto.username,
             password: createUserDto.password,
             singupData: Date.now(),
         }
         const newUser = new this.usersModel(newCompleteUser);
-        return await newUser.save();
+        await newUser.save();
+
+        const userInfo: UserInfoRo = {
+            username: newUser.username,
+            contacts: newUser.contacts.map(c => c.username),
+        }
+        
+        return userInfo;
     }
 
     public async updateUserById(userId: Types.ObjectId, updateUserDto: Partial<CreateUserDto>): Promise<Users> {

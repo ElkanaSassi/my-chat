@@ -3,9 +3,9 @@ import { ChatSelectionService } from '../../chat-selection.service';
 import { HttpService } from '../../../core/services/http/httpConnection.service';
 import { LocalStorageService } from '../../../core/services/localStorage/localStorage.service';
 import { CommonModule } from '@angular/common';
-import { Chat } from '../../../shared/types/chat.type';
-import { UserInfo } from '../../../shared/types/user.type';
-import { Group } from '../../../shared/types/group.type';
+import { ChatRo } from '../../../common/ro/chats/chats.type';
+import { UserInfoRo } from '../../../common/ro/users/userInfo.ro';
+import { GroupRo } from '../../../common/ro/groups/groups.ro';
 
 @Component({
     selector: 'app-chat-header',
@@ -14,8 +14,8 @@ import { Group } from '../../../shared/types/group.type';
     styleUrl: './chat-header.component.css'
 })
 export class ChatHeaderComponent {
-    currentChat: Chat;
-    private user: UserInfo;
+    currentChat: ChatRo;
+    private user: UserInfoRo;
 
     constructor(
         private httpService: HttpService,
@@ -36,9 +36,9 @@ export class ChatHeaderComponent {
         });
     }
 
-    chatName(chat: Chat): string {
+    chatName(chat: ChatRo): string {
         if (chat.chatType === 'Groups') {
-            return (chat as Group).groupName;
+            return (chat as GroupRo).groupName;
         }
         else {
             return this.user.username === chat.membersList[0]
