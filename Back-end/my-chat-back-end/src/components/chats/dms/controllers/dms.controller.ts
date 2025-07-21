@@ -15,10 +15,10 @@ export class DmsController {
         return this.dmsServies.createDm(createDmDto);
     }
 
-    @Get(':userId')
-    public getUserDms(@Param('userId') userId: string): Promise<Dms[]> {
-        console.log(userId);
-        return this.dmsServies.getUserDms(new Types.ObjectId(userId));
+    @Get(':username')
+    public getUserDms(@Param('username') username: string): Promise<Dms[]> {
+        console.log(username);
+        return this.dmsServies.getUserDms(username);
     }
 
     @Post('messages/:dmId')

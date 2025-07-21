@@ -2,8 +2,8 @@
 
 <div class="chat-list">
   <div class="chat-item" *ngFor="let chat of chats">
-    <button class="btn chat-name" (click)="onChatClicked(chat._id)">
-      {{ chat._id }}
+    <button class="btn chat-name" (click)="onChatClicked(chat)">
+      {{ chatName(chat) }}
     </button>
   </div>
 </div>

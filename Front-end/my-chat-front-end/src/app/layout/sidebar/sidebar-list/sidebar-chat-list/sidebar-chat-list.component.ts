@@ -2,32 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpService } from '../../../../core/services/http/httpConnection.service';
 import { LocalStorageService } from '../../../../core/services/localStorage/localStorage.service';
-import { from, NotFoundError } from 'rxjs';
-import { Expansion } from '@angular/compiler';
 import { ChatSelectionService } from '../../../chat-selection.service';
-
-export interface Chat {
-    _id: string;
-    chatType: string;
-    membersList: string[];
-    messages: Message[];
-    createAt: string;
-}
-
-export interface Dm extends Chat {
-}
-
-export interface Group extends Chat {
-    groupaName: string;
-    admin: string;
-    discription?: string;
-}
-
-export interface Message {
-    from: string;
-    dateTime: Date;
-    data: string;
-}
+import { Chat } from '../../../../shared/types/chat.type';
+import { UserInfo } from '../../../../shared/types/user.type';
+import { Dm } from '../../../../shared/types/dm.type';
+import { Group } from '../../../../shared/types/group.type';
 
 @Component({
     selector: 'app-sidebar-chat-list',
@@ -39,6 +18,7 @@ export interface Message {
 export class SidebarChatListComponent {
     chats: Chat[] = [];
     @Output() messages = new EventEmitter<string>;
+    private user: UserInfo;
 
     constructor(
         private httpService: HttpService,
@@ -49,7 +29,8 @@ export class SidebarChatListComponent {
     ngOnInit() {
         const user = this.localStorage.getItem('user');
         if (user) {
-            const userId = JSON.parse(user)._id;
+            this.user = JSON.parse(user);
+            const userId = JSON.parse(user).username;
 
             this.httpService.get<Dm[]>(`dms/${userId}`).subscribe({
                 next: (res) => {
@@ -60,35 +41,26 @@ export class SidebarChatListComponent {
 
             this.httpService.get<Group[]>(`groups/${userId}`).subscribe({
                 next: (res) => {
-                    this.chats.concat(res.map(group => group));
+                    this.chats.push(...res.map(group => group));
                 },
                 error: (err) => { }
             });
         }
     }
 
-    onChatClicked(chatId: string) {
-        this.chatSelectionService.setSelectedChat(chatId);
-        // this.messages.emit(chatId);
-
-        // let path: string;
-        // if (chat.chatType == "Dms") {
-        //     path = `dms/messages/${chat._id}`;
-        // }
-        // else if (chat.chatType == "Groups") {
-        //     path = `group/messages/${chat._id}`;
-        // }
-        // else {
-        //     throw new Error('chat type donsen\'t exists.');
-        // }
-
-        // this.httpService.get<Message[]>(path).subscribe({
-        //     next: (res) => {
-        //         const messsagesList = res;
-        //         console.log('messages: ', messsagesList);
-        //         this.messages.emit(messsagesList);
-        //     },
-        //     error: (err) => { }
-        // });
+    onChatClicked(chat: Chat) {
+        this.chatSelectionService.setSelectedChat(chat);
     }
+
+    chatName(chatId: Chat): string {
+        if (chatId.chatType === 'Groups') {
+            return (chatId as Group).groupName;
+        }
+        else {
+            return this.user.username === chatId.membersList[0]
+                ? chatId.membersList[1]
+                : chatId.membersList[0];
+        }
+    }
+
 }

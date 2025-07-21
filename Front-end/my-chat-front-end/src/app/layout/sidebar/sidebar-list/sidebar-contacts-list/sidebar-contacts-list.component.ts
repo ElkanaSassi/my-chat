@@ -5,15 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { LocalStorageService } from '../../../../core/services/localStorage/localStorage.service';
 import { difference } from 'lodash';
 
-interface User {
-    _id: string;
-    username: string;
-    password: string;
-    singupData: string;
-    contacts: string[];
-    __v: number;
-}
-
 @Component({
     selector: 'app-sidebar-contacts-list',
     standalone: true,

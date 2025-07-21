@@ -39,11 +39,11 @@ export class DmsService {
         return newDm.save();
     }
 
-    public async getUserDms(userId: Types.ObjectId): Promise<Dms[]> {
-        const user = await this.usersServices.getUserById(userId);
-
+    public async getUserDms(username: string): Promise<Dms[]> {
+        const user = await this.usersServices.getUserByUserName(username);
+ 
         const userDms = await this.dmsModel.find({
-            //membersList: { $in: [user._id] }
+            membersList: { $in: [user._id] }
         });
 
         if (userDms.length === 0) {

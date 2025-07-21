@@ -22,17 +22,16 @@ export class GroupService {
         this.groupsModel = groupsModel as Model<Groups>;
     }
 
-    public async getUserGroups(userId: Types.ObjectId): Promise<Groups[]> {
-        const user = await this.usersServices.getUserById(userId);
+    public async getUserGroups(username: string): Promise<Groups[]> {
+        const user = await this.usersServices.getUserByUserName(username);
 
         const userGroups = await this.groupsModel.find({
-            membersList: {
-                $in: [
-                    // user._id,
-                ]
-            }
+            membersList: { $in: [user._id] }
         }).exec();
-        if (userGroups.length === 0) throw new NotFoundException(`Failed: Couldn't find GroupsS of user: ${user.username}.`);
+        
+        if (userGroups.length === 0) {
+            throw new NotFoundException(`Failed: Couldn't find GroupsS of user: ${user.username}.`);
+        }
 
         return userGroups;
     }
@@ -53,7 +52,7 @@ export class GroupService {
             createdAt: Date.now(),
             groupName: createGroupDto.groupName,
             admin: createGroupDto.admin,
-            description: createGroupDto.description ? createGroupDto.description : "" ,
+            description: createGroupDto.description ? createGroupDto.description : "",
             membersList: membersList,
             chatType: Groups.name,
         }

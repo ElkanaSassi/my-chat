@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Chat } from '../shared/types/chat.type';
 
 @Injectable({ providedIn: 'root' })
 export class ChatSelectionService {
-  private selectedChatId$ = new BehaviorSubject<string | null>(null);
+  private selectedChat$ = new BehaviorSubject<Chat | null>(null);
 
-  setSelectedChat(chatId: string) {
-    this.selectedChatId$.next(chatId);
+  setSelectedChat(chat: Chat) {
+    this.selectedChat$.next(chat);
   }
 
   getSelectedChat() {
-    return this.selectedChatId$.asObservable();
+    return this.selectedChat$.asObservable();
   }
 }

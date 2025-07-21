@@ -6,13 +6,13 @@ import { GroupService } from 'src/components/chats/groups/services/group.service
 import { Groups } from 'src/schemas/chats/groups/groups.schema';
 import { Users } from 'src/schemas/users/users.schema';
 
-@Controller('group')
+@Controller('groups')
 export class GroupController {
     constructor(private groupService: GroupService) { }
 
-    @Get(':userId')
-    public getUserGroups(@Param('userId') userId: string): Promise<Groups[]> {
-        return this.groupService.getUserGroups(new Types.ObjectId(userId));
+    @Get(':username')
+    public getUserGroups(@Param('username') username: string): Promise<Groups[]> {
+        return this.groupService.getUserGroups(username);
     }
 
     @Get('getUsers/:groupId')
