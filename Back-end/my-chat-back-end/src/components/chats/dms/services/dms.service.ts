@@ -1,15 +1,18 @@
 import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { UsersService } from '../../../users/services/user.service';
-import { Dms } from 'src/schemas/chats/dms/dms.schema';
-import { CreateDmDto } from '../../../../common/dto/dms/create-dm.dto';
-import { Chats } from 'src/schemas/chats/chats.schema';
 import { difference } from 'lodash';
+
+import { UsersService } from '../../../users/services/user.service';
+
+import { CreateMessageDto } from '../../../../common/models/dto/messages/create-message.dto';
+import { CreateDmDto } from '../../../../common/models/dto/dms/create-dm.dto';
+import { MessagesRo } from 'src/common/models/ro/messages/messages.ro';
+import { DmRo } from 'src/common/models/ro/dms/dms.ro';
+
 import { Messages } from 'src/schemas/messages/messages.schema';
-import { CreateMessageDto } from '../../../../common/dto/messages/create-message.dto';
-import { DmRo } from 'src/common/ro/dms/dms.ro';
-import { MessagesRo } from 'src/common/ro/messages/messages.ro';
+import { Dms } from 'src/schemas/chats/dms/dms.schema';
+import { Chats } from 'src/schemas/chats/chats.schema';
 
 @Injectable()
 export class DmsService {
@@ -66,7 +69,7 @@ export class DmsService {
         return Promise.all(userDms.map(async dm => await this.buildDmRo(dm)));
     }
 
-    public async createMessage(dmId: Types.ObjectId, createMessageDto: CreateMessageDto): Promise<Messages> {
+    public async createMessage(dmId: Types.ObjectId, createMessageDto: CreateMessageDto): Promise<MessagesRo> {
         const dm = await this.dmsModel.findById(dmId).exec();
         if (!dm) {
             throw new NotFoundException(`Failed: Couldn't find DM with Id: ${dmId}`);
@@ -81,7 +84,11 @@ export class DmsService {
         dm.messages.push(completeMessage);
         await dm.save();
 
-        return completeMessage;
+        const messagesRo: MessagesRo = {
+            messagesList: dm.messages
+        }
+
+        return messagesRo;
     }
 
     public async getDmMessages(dmId: Types.ObjectId): Promise<MessagesRo> {

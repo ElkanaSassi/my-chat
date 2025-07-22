@@ -1,5 +1,4 @@
-import { IsDate, IsMongoId, IsNotEmpty, IsString } from "class-validator";
-import { Types } from "mongoose";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateMessageDto {
 

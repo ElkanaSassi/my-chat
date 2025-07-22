@@ -1,37 +1,45 @@
 import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { Subject } from 'rxjs';
-import { SocketEvent } from './websocket-events.enum';
+import { Observable, Subject } from 'rxjs';
+import { io, Socket } from 'socket.io-client';
+import { environment } from '../../../env/environment';
+import { Messages, MessagesRo } from '../../../common/ro/messages/messages.ro';
 
-export const environment = {
-  production: false,
-  socketUrl: 'ws://localhost:3000',
-};
 
 @Injectable({ providedIn: 'root' })
 export class WebSocketService {
-  private socket$!: WebSocketSubject<any>;
-  public incoming$ = new Subject<any>();
+    private socket: Socket;
 
-  constructor() {
-    this.connect();
-  }
+    constructor() {
+        this.socket = io(environment.apiUrl);
+    }
 
-  private connect() {
-    this.socket$ = webSocket(environment.socketUrl);
+    joinRoom(data: string) {
+        console.log('joining room');
+        this.socket.emit('joinDm', data)
+    }
 
-    this.socket$.subscribe({
-      next: (msg) => this.incoming$.next(msg),
-      error: (err) => console.error('WebSocket error:', err),
-      complete: () => console.log('WebSocket connection closed'),
-    });
-  }
+    sendDm(data: any) {
+        this.socket.emit('sendDm', data);
+    }
 
-  send(event: SocketEvent, data: any) {
-    this.socket$.next({ event, data });
-  }
+    getDm(): Observable<MessagesRo> {
+        return new Observable((observer) => {
+            this.socket.on('newDm', (data: MessagesRo) => {
+                observer.next(data);
+            });
+        })
+    }
 
-  close() {
-    this.socket$.complete();
-  }
+    sendGroup(data: any) {
+        this.socket.emit('sendGroup', data);
+    }
+
+    getGroup(): Observable<MessagesRo> {
+        return new Observable((observer) => {
+            this.socket.on('newGroup', (data: MessagesRo) => {
+                observer.next(data);
+            });
+        })
+    }
 }

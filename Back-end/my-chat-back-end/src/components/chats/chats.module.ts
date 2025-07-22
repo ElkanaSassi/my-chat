@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Chats, ChatsSchema } from 'src/schemas/chats/chats.schema';
 import { Dms, DmsSchema } from 'src/schemas/chats/dms/dms.schema';
 import { Groups, GroupsSchema } from 'src/schemas/chats/groups/groups.schema';
+import { MessagesModule } from './messages/messages.module';
 import { ChatsGateway } from './chats.gateway';
 import { DmsModule } from './dms/dms.module';
 import { GroupsModule } from './groups/groups.module';
-import { MessagesModule } from './messages/messages.module';
 
 
 
@@ -23,6 +23,8 @@ import { MessagesModule } from './messages/messages.module';
             },
         ]),
         MessagesModule,
+        forwardRef(() => DmsModule),
+        forwardRef(() => GroupsModule),
     ],
     providers: [ChatsGateway],
     controllers: [],

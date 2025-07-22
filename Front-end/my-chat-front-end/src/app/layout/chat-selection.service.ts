@@ -10,7 +10,12 @@ export class ChatSelectionService {
     constructor(private socket: Socket) { }
 
     setSelectedChat(chat: ChatRo) {
-        this.socket.emit('joinDm', chat._id);
+        if (chat.chatType === 'DmRo') {
+            this.socket.emit('joinDm', chat._id);
+        }
+        else if (chat.chatType === 'GroupRp') {
+            this.socket.emit('joinGroup', chat._id);
+        }
         this.selectedChat$.next(chat);
     }
 

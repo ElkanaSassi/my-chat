@@ -1,13 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { AddOrRemoveUsersDto } from '../../../../common/dto/groups/add-users.dto';
-import { CreateGroupDto } from '../../../../common/dto/groups/create-group.dto';
+
 import { GroupService } from 'src/components/chats/groups/services/group.service';
-import { Groups } from 'src/schemas/chats/groups/groups.schema';
-import { Users } from 'src/schemas/users/users.schema';
-import { CreateMessageDto } from '../../../../common/dto/messages/create-message.dto';
-import { GroupRo } from 'src/common/ro/groups/groups.ro';
-import { Messages } from 'src/schemas/messages/messages.schema';
+
+import { AddOrRemoveUsersDto } from '../../../../common/models/dto/groups/add-users.dto';
+import { CreateGroupDto } from '../../../../common/models/dto/groups/create-group.dto';
+import { CreateMessageDto } from '../../../../common/models/dto/messages/create-message.dto';
+import { GroupRo } from 'src/common/models/ro/groups/groups.ro';
+import { MessagesRo } from 'src/common/models/ro/messages/messages.ro';
 
 @Controller('groups')
 export class GroupController {
@@ -30,7 +30,7 @@ export class GroupController {
     }
 
     @Post('messages/:groupId')
-    public createMessage(@Param('groupId') groupId: string, @Body() createMessageDto: CreateMessageDto): Promise<Messages[]> {
+    public createMessage(@Param('groupId') groupId: string, @Body() createMessageDto: CreateMessageDto): Promise<MessagesRo> {
         return this.groupService.createMessage(new Types.ObjectId(groupId), createMessageDto);
     }
 

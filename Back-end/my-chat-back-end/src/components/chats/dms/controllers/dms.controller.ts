@@ -1,12 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { DmsService } from '../services/dms.service';
 import { Types } from 'mongoose';
-import { CreateDmDto } from '../../../../common/dto/dms/create-dm.dto';
+
+import { DmsService } from '../services/dms.service';
+
+import { CreateMessageDto } from '../../../../common/models/dto/messages/create-message.dto';
+import { CreateDmDto } from '../../../../common/models/dto/dms/create-dm.dto';
+import { MessagesRo } from 'src/common/models/ro/messages/messages.ro';
+import { DmRo } from 'src/common/models/ro/dms/dms.ro';
+
 import { Dms } from 'src/schemas/chats/dms/dms.schema';
-import { Messages } from 'src/schemas/messages/messages.schema';
-import { CreateMessageDto } from '../../../../common/dto/messages/create-message.dto';
-import { DmRo } from 'src/common/ro/dms/dms.ro';
-import { MessagesRo } from 'src/common/ro/messages/messages.ro';
+
 
 @Controller('dms')
 export class DmsController {
@@ -23,7 +26,7 @@ export class DmsController {
     }
 
     @Post('messages/:dmId')
-    public createMessage(@Param('dmId') dmId: string , @Body() createMessageDto: CreateMessageDto): Promise <Messages> {
+    public createMessage(@Param('dmId') dmId: string , @Body() createMessageDto: CreateMessageDto): Promise <MessagesRo> {
         return this.dmsServies.createMessage(new Types.ObjectId(dmId), createMessageDto);
     }
 

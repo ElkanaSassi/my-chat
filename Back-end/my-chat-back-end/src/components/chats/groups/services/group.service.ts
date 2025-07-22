@@ -1,18 +1,20 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Document, Model, Types } from 'mongoose';
-import { AddOrRemoveUsersDto } from '../../../../common/dto/groups/add-users.dto';
-import { CreateGroupDto } from '../../../../common/dto/groups/create-group.dto';
-import { Groups } from 'src/schemas/chats/groups/groups.schema';
+import { Model, Types } from 'mongoose';
+
 import { UsersService } from 'src/components/users/services/user.service';
-import { Chats } from 'src/schemas/chats/chats.schema';
-import { Users } from 'src/schemas/users/users.schema';
-import { CreateMessageDto } from '../../../../common/dto/messages/create-message.dto';
+
+import { AddOrRemoveUsersDto } from '../../../../common/models/dto/groups/add-users.dto';
+import { CreateGroupDto } from '../../../../common/models/dto/groups/create-group.dto';
+import { CreateMessageDto } from '../../../../common/models/dto/messages/create-message.dto';
+import { GroupRo } from 'src/common/models/ro/groups/groups.ro';
+import { MessagesRo } from 'src/common/models/ro/messages/messages.ro';
+
+import { Groups } from 'src/schemas/chats/groups/groups.schema';
 import { Messages } from 'src/schemas/messages/messages.schema';
-import { GroupRo } from 'src/common/ro/groups/groups.ro';
-import { group } from 'console';
-import { UserInfo } from 'os';
-import { UserInfoRo } from 'src/common/ro/users/userInfo.ro';
+import { Users } from 'src/schemas/users/users.schema';
+import { Chats } from 'src/schemas/chats/chats.schema';
+
 
 @Injectable()
 export class GroupService {
@@ -72,7 +74,7 @@ export class GroupService {
         return this.buildGroupRo(newGroup);
     }
 
-    public async createMessage(groupId: Types.ObjectId, createMessageDto: CreateMessageDto): Promise<Messages[]> {
+    public async createMessage(groupId: Types.ObjectId, createMessageDto: CreateMessageDto): Promise<MessagesRo> {
         const group = await this.groupsModel.findById(groupId).exec();
         if (!group) {
             throw new NotFoundException(`Failed: Couldn't find Group with Id: ${groupId}`);
@@ -87,7 +89,10 @@ export class GroupService {
         group.messages.push(completeMessage);
         await group.save();
 
-        return group.messages;
+        const messagesRo: MessagesRo = {
+            messagesList: group.messages
+        }
+        return messagesRo;
     }
 
     public async addUsersToGroup(groupId: Types.ObjectId, addUsersDto: AddOrRemoveUsersDto): Promise<GroupRo> {

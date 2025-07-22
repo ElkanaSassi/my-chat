@@ -11,6 +11,7 @@ import { CreateMessageDto } from '../../../common/dto/messages/create-message.dt
 import { ChatRo } from '../../../common/ro/chats/chats.type';
 import { UserInfoRo } from '../../../common/ro/users/userInfo.ro';
 import { MessagesRo } from '../../../common/ro/messages/messages.ro';
+import { WebSocketService } from '../../../core/services/websocket/websocket.service';
 
 @Component({
     selector: 'app-message-input',
@@ -23,11 +24,11 @@ export class MessageInputComponent {
     messageText: string = '';
     currentChat: ChatRo;
     user: UserInfoRo;
-    socket: Socket;
 
     constructor(
         private httpService: HttpService,
         private localStorage: LocalStorageService,
+        private webSocketService: WebSocketService,
         private chatSelectionService: ChatSelectionService,
     ) { }
 
@@ -38,23 +39,27 @@ export class MessageInputComponent {
         this.chatSelectionService.getSelectedChat().subscribe(chat => {
             if (chat) {
                 this.currentChat = chat;
+                this.webSocketService.joinRoom(this.currentChat._id);
             }
         });
 
     }
 
     sendMessage() {
-        const path = this.currentChat.chatType === 'DmRo'
-            ? `dms/messages/${this.currentChat._id}`
-            : `groups/messages/${this.currentChat._id}`;
 
         if (this.messageText) {
             const completeMessage: CreateMessageDto = {
                 from: this.user.username,
                 data: this.messageText,
             }
-            //this.socket.emit('sendDm', completeMessage);
-            this.httpService.post<MessagesRo>(path, completeMessage).subscribe();
+
+            const path = this.currentChat.chatType === 'DmRo'
+                ? this.webSocketService.sendDm({
+                    room: this.currentChat._id, messageDto: completeMessage
+                })
+                : this.webSocketService.sendGroup({
+                    room: this.currentChat._id, messageDto: completeMessage
+                });;
             this.messageText = '';
         }
     }

@@ -8,8 +8,8 @@ import {
     Post,
 } from '@nestjs/common';
 import { UsersService } from '../services/user.service';
-import { CreateUserDto } from '../../../common/dto/users/create-user.dto';
-import { AddContactsDto } from '../../../common/dto/users/add-contacts.dto';
+import { CreateUserDto } from '../../../common/models/dto/users/create-user.dto';
+import { AddContactsDto } from '../../../common/models/dto/users/add-contacts.dto';
 import { Users } from 'src/schemas/users/users.schema';
 import { Types } from 'mongoose';
 

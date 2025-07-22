@@ -6,6 +6,8 @@ import { LocalStorageService } from '../../../core/services/localStorage/localSt
 import { MessagesRo } from '../../../common/ro/messages/messages.ro';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { WebSocketService } from '../../../core/services/websocket/websocket.service';
+import { ChatRo } from '../../../common/ro/chats/chats.type';
 
 @Component({
     selector: 'app-message-list',
@@ -17,12 +19,12 @@ import { Observable } from 'rxjs';
 export class MessageListComponent {
     messages: MessagesRo;
     username: string;
-    currentChatId: string;
-    socket: Socket;
+    currentChat: ChatRo;
 
     constructor(
         private httpService: HttpService,
         private localStorage: LocalStorageService,
+        private websocketService: WebSocketService,
         private chatSelectionService: ChatSelectionService,
     ) { }
 
@@ -30,42 +32,46 @@ export class MessageListComponent {
         const u = this.localStorage.getItem('user');
         this.username = JSON.parse(u as string).username;
 
-        // this.socket = io('http://localhost:3000', {
-        //     auth: {
-        //         username: this.username,
-        //     }
-        // });
-
         this.chatSelectionService.getSelectedChat().subscribe(chat => {
             if (chat) {
-                this.currentChatId = chat._id;
-                this.loadChat(chat._id);
+                this.currentChat = chat;
+                this.loadChat(chat);
             }
         });
 
-        
-        // this.getNewMessage().subscribe({
-        //     next: (res) => {
-        //         this.messages = res;
-        //     }
-        // });
+
     }
 
-    loadChat(chatId: string) {
-        this.httpService.get<MessagesRo>(`dms/messages/${chatId}`).subscribe({
-            next: (res) => {
-                this.messages = res;
-            },
-            error: (err) => { }
-        });
+    loadChat(chat: ChatRo) {
+        if (chat.chatType === 'DmRo') {
+            this.httpService.get<MessagesRo>(`dms/messages/${chat._id}`).subscribe({
+                next: (res) => {
+                    this.messages = res;
+                },
+                error: (err) => { }
+            });
+
+            this.websocketService.getDm().subscribe({
+                next: (res) => {
+                    this.messages = res;
+                }
+            });
+        }
+        else if (chat.chatType === 'GroupRo') {
+            this.httpService.get<MessagesRo>(`groups/messages/${chat._id}`).subscribe({
+                next: (res) => {
+                    this.messages = res;
+                },
+                error: (err) => { }
+            });
+
+            this.websocketService.getGroup().subscribe({
+                next: (res) => {
+                    this.messages = res;
+                }
+            });
+        }
+
     }
 
-    
-    // getNewMessage(): Observable<MessagesRo> {
-    //     return new Observable((observer) => {
-    //         this.socket.on('newDm', (data) => {
-    //             observer.next(data);
-    //         });
-    //     });
-    // }
 }

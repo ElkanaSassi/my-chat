@@ -2,9 +2,9 @@ import { Injectable, NotFoundException, PreconditionFailedException } from '@nes
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Users } from 'src/schemas/users/users.schema';
-import { CreateUserDto } from '../../../common/dto/users/create-user.dto';
-import { AddContactsDto } from '../../../common/dto/users/add-contacts.dto';
-import { UserInfoRo } from 'src/common/ro/users/userInfo.ro';
+import { CreateUserDto } from '../../../common/models/dto/users/create-user.dto';
+import { AddContactsDto } from '../../../common/models/dto/users/add-contacts.dto';
+import { UserInfoRo } from 'src/common/models/ro/users/userInfo.ro';
 
 @Injectable()
 export class UsersService {
