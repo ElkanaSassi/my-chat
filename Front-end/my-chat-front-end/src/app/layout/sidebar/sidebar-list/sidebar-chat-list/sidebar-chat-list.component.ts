@@ -7,24 +7,34 @@ import { ChatRo } from '../../../../common/ro/chats/chats.type';
 import { UserInfoRo } from '../../../../common/ro/users/userInfo.ro';
 import { DmRo } from '../../../../common/ro/dms/dms.ro';
 import { GroupRo } from '../../../../common/ro/groups/groups.ro';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-sidebar-chat-list',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './sidebar-chat-list.component.html',
     styleUrl: './sidebar-chat-list.component.css'
 })
 export class SidebarChatListComponent {
     chats: ChatRo[] = [];
     @Output() messages = new EventEmitter<string>;
-    private user: UserInfoRo;
+    user: UserInfoRo;
+    addGroupForm: FormGroup;
+    addGroup: boolean = false;
 
     constructor(
+        private fb: FormBuilder,
         private httpService: HttpService,
         private localStorage: LocalStorageService,
         private chatSelectionService: ChatSelectionService,
-    ) { }
+    ) {
+        this.addGroupForm = this.fb.group({
+            groupName: ['', Validators.required],
+            members: this.fb.array([]),
+            description: ['', Validators.required]
+        });
+    }
 
     ngOnInit() {
         const user = this.localStorage.getItem('user');
@@ -61,6 +71,23 @@ export class SidebarChatListComponent {
                 ? chatId.membersList[1]
                 : chatId.membersList[0];
         }
+    }
+
+    onSubmit() {
+        const group = {
+            groupName: this.addGroupForm.value.groupName,
+            members: this.addGroupForm.value.members,
+            description: this.addGroupForm.value.description,
+        }
+    }
+
+    onCheckboxChange(event: any, contactId: string) {
+        // if (event.target.checked) {
+        //     this.contacts.push(this.fb.control(contactId));
+        // } else {
+        //     const index = this.contacts.controls.findIndex(ctrl => ctrl.value === contactId);
+        //     if (index !== -1) this.contacts.removeAt(index);
+        // }
     }
 
 }

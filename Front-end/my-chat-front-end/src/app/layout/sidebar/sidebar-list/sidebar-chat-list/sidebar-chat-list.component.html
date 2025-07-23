@@ -1,3 +1,56 @@
+<button class="add-group-btn" (click)="addGroup = !addGroup">
+  Add Group
+</button>
+
+<!-- Popup user list -->
+<div class="add-group" *ngIf="addGroup">
+  <div class="add-group-header">
+    <span>Add Group</span>
+    <button class="btn btn-danger" (click)="addGroup = false">X</button>
+  </div>
+
+  <form [formGroup]="addGroupForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>Group Name</label>
+      <div>
+        <input type="text" id="groupName" formControlName="groupName" required>
+      </div>
+    </div>
+
+    <div>
+      <label>Members</label>
+      <div>
+        <!-- <mat-form-field>
+          <mat-label>Select Toppings</mat-label>
+          <mat-select [formControl]="toppings" multiple>
+            <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+
+        <select class="form-multi-select" id="ms1" multiple data-coreui-search="global">
+          <option *ngFor="let contact of user.contacts" [value]="contact">{{ contact }}</option>
+        </select>
+      </div>
+    </div>
+
+
+    <div>
+      <label>Description</label>
+      <div>
+        <input type="text" id="description" formControlName="description" required>
+      </div>
+    </div>
+    <!-- <div *ngIf="!isLoginSuccessful">
+      <span style="color:red;">Username or Password are Incorrect!</span>
+    </div> -->
+
+    <div>
+      <button class="add-btn">Add</button>
+    </div>
+  </form>
+
+
+</div>
 
 <div class="chat-list">
   <div class="chat-item" *ngFor="let chat of chats">

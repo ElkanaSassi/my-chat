@@ -57,7 +57,7 @@ export class UsersService {
             username: newUser.username,
             contacts: newUser.contacts.map(c => c.username),
         }
-        
+
         return userInfo;
     }
 
@@ -84,6 +84,7 @@ export class UsersService {
 
     public async addContactToUser(username: string, addContactdDto: AddContactsDto): Promise<string[]> {
         const contact = await this.usersModel.findOne({ username: addContactdDto.contact }).exec();
+        if (!contact) throw new NotFoundException(`Failed: Couldn\'t find contact: ${addContactdDto.contact}`);
 
         const updatedUser = await this.usersModel.findOneAndUpdate(
             { username: username },
@@ -93,6 +94,11 @@ export class UsersService {
         if (!updatedUser) {
             throw new NotFoundException(`Faild: Couldn't find user: '${username}'.`);
         }
+
+        // await this.usersModel.findOneAndUpdate(
+        //     { username: contact.username },
+        //     { $addToSet: { contacts: username } },
+        // ).exec();
 
         const contacts = await this.usersModel.find(
             { _id: { $in: updatedUser.contacts } }
