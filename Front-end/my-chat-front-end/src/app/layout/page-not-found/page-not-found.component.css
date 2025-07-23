@@ -1,45 +1,37 @@
+/* Container fills viewport and centers content */
 .not-found-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
-  background-color: #f8f9fa;
-  text-align: center;
-  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f4f2; /* same light teal */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Content box styled like a popup/modal */
 .not-found-content {
-  max-width: 600px;
+  background: white;
+  padding: 40px 60px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(91, 132, 120, 0.4);
+  text-align: center;
+  color: #5b8478;
+  max-width: 320px;
+  width: 90vw;
 }
 
+/* Large 404 number */
 .not-found-content h1 {
   font-size: 6rem;
-  color: #dc3545;
-  margin: 0;
+  margin: 0 0 10px;
+  font-weight: 900;
+  color: #5b8478;
 }
 
+/* Subheading */
 .not-found-content h2 {
-  font-size: 2rem;
-  color: #343a40;
-  margin-bottom: 20px;
-}
-
-.not-found-content p {
-  font-size: 1.1rem;
-  color: #6c757d;
-  margin-bottom: 30px;
-}
-
-.home-button {
-  padding: 12px 24px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 6px;
-  transition: background-color 0.3s ease;
-}
-
-.home-button:hover {
-  background-color: #0056b3;
+  font-size: 1.75rem;
+  margin: 0;
+  font-weight: 600;
+  color: #3c5f55;
 }

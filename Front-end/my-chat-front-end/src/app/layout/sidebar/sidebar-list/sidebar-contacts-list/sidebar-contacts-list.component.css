@@ -1,106 +1,177 @@
+/* Contacts container similar to sidebar-chat-container */
 .contacts-list {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fafafa;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  max-width: 420px;
+  height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f4f2; /* same light teal */
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(91, 132, 120, 0.2);
+  padding: 1rem 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Scrollable contacts list takes available vertical space */
+.contact-list-scroll {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+/* Each contact item styling like chat-item */
 .contact-item {
+  padding: 10px 22px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #5b8478;
+  background-color: transparent;
+  border-radius: 25px;
+  cursor: default;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
 }
 
 .contact-item:hover {
-  background-color: #f0f0f0;
+  background-color: #d2e3de;
+  color: #3c5f55;
 }
 
-.contact-name {
-  font-size: 1rem;
-  color: #333;
-  font-weight: 500;
-  flex-grow: 1;
-}
-
-.contact-name button {
-  margin-right: 1rem;
-  padding: 0.4rem 0.8rem;
+/* Button inside contact name, similar style to chat-name but smaller */
+.contact-item button {
+  background-color: #5b8478;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 6px 14px;
   font-size: 0.85rem;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease;
+  margin-left: 12px;
 }
 
-.contact-name button:hover {
-  background-color: #45a049;
+.contact-item button:hover,
+.contact-item button:focus {
+  background-color: #3c5f55;
+  outline: none;
 }
 
+/* Add Contact Button fixed at bottom like add-group-btn */
 .open-users-btn {
-  padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #5b8478;
   color: white;
-  font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 25px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: auto;
 }
 
+.open-users-btn:hover,
+.open-users-btn:focus {
+  background-color: #3c5f55;
+  outline: none;
+}
+
+/* Popup container matching add-group style */
 .users-pool {
-  position: fixed; /* fixed to viewport */
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* perfect center */
-  
-  width: 300px;
-  max-height: 400px;
-  overflow-y: auto;
-  background-color: #f1f1f1;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%);
+  background: #f0f4f2;
+  width: 100%;
+  max-width: 480px;
+  padding: 28px 32px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(91, 132, 120, 0.4);
   z-index: 1000;
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Popup header like add-group-header */
 .users-pool-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #3c5f55;
 }
 
+/* Close button same style as .btn-danger */
+.users-pool-header .btn-danger {
+  background-color: #e57373;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.users-pool-header .btn-danger:hover,
+.users-pool-header .btn-danger:focus {
+  background-color: #d32f2f;
+  outline: none;
+}
+
+/* List inside popup */
 .users-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+/* Each user item inside popup */
 .user-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
+  background-color: white;
   margin-bottom: 8px;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 10px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  color: #5b8478;
+  transition: background-color 0.3s ease;
 }
 
-.add-btn {
-  background-color: #28a745;
+.user-item:hover {
+  background-color: #d2e3de;
+  color: #3c5f55;
+}
+
+/* Add button in popup user list */
+.user-item .add-btn {
+  background-color: #5b8478;
   color: white;
   border: none;
-  padding: 4px 10px;
-  border-radius: 4px;
+  padding: 6px 14px;
+  border-radius: 25px;
   cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.user-item .add-btn:hover,
+.user-item .add-btn:focus {
+  background-color: #3c5f55;
+  outline: none;
 }

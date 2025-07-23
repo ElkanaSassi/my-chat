@@ -13,7 +13,7 @@ app-sidebar-header {
   flex-grow: 1;
   overflow-y: auto;
   padding: 12px;
-  background-color: #e6d081; /* Your router content background */
+  /* background-color: #e6d081; Your router content background */
   display: flex;
   flex-direction: column;
 }

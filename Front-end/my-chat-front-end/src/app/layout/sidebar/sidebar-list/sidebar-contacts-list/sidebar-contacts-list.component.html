@@ -1,27 +1,28 @@
+<div class="contacts-list">
+  <div class="contact-list-scroll">
+    <div class="contact-item" *ngFor="let contact of contactsList">
+      <span>{{ contact }}</span>
+      <!-- Optional button inside contact item -->
+      <!-- <button (click)="onContactAction(contact)">Action</button> -->
+    </div>
+  </div>
 
-<button class="open-users-btn" (click)="showUsersPool = !showUsersPool">
-  Add Contact
-</button>
+  <button class="open-users-btn" type="button" (click)="showUsersPool = !showUsersPool">
+    Add Contact
+  </button>
+</div>
 
 <!-- Popup user list -->
 <div class="users-pool" *ngIf="showUsersPool">
   <div class="users-pool-header">
     <span>Select a user to add</span>
-    <button class="btn btn-danger" (click)="showUsersPool = false">X</button>
+    <button type="button" class="btn btn-danger" (click)="showUsersPool = false">&times;</button>
   </div>
 
   <ul class="users-list">
     <li *ngFor="let user of availableUsers" class="user-item">
       <span>{{ user }}</span>
-      <button class="add-btn" (click)="onAddUser(user)">Add</button>
+      <button type="button" class="add-btn" (click)="onAddUser(user)">Add</button>
     </li>
   </ul>
-</div>
-
-<div class="contacts-list">
-    <div class="contact-item" *ngFor="let contact of contactsList">
-        <div class="contact-name">
-            {{ contact }}
-        </div>
-    </div>
 </div>

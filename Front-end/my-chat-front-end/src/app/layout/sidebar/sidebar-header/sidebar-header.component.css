@@ -1,38 +1,73 @@
-/* Parent container of nav-tabs should stretch */
 .nav-tabs-container {
   width: 100%;
+  background-color: #5b8478;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-/* Custom nav-tabs styling */
+/* User info styling */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.user-info i {
+  font-size: 1.5rem;
+}
+
+/* Nav-tabs container */
 .nav-tabs {
   border: none;
   justify-content: center;
-  background-color: #f4f4f4;
-  border-radius: 12px;
-  padding: 4px;
+  background-color: #f0f4f2;
+  border-radius: 16px;
+  padding: 6px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Remove default tab border */
+/* Nav link style */
 .nav-tabs .nav-link {
   border: none;
-  border-radius: 20px;
-  color: #555;
-  padding: 10px 20px;
-  font-weight: 500;
+  border-radius: 25px;
+  color: #5b8478;
+  padding: 10px 22px;
+  font-weight: 600;
+  background-color: transparent;
   transition: all 0.3s ease;
 }
 
-/* Hover effect */
 .nav-tabs .nav-link:hover {
-  background-color: #e0e0e0;
-  color: #000;
+  background-color: #d2e3de;
+  color: #3c5f55;
 }
 
-/* Active tab */
 .nav-tabs .nav-link.active {
-  background-color: #007bff;
+  background-color: #5b8478;
   color: white;
-  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
+  box-shadow: 0 4px 8px rgba(91, 132, 120, 0.4);
+}
+
+/* Logout button */
+.nav-tabs button {
+  border: none;
+  background-color: #e57373;
+  color: white;
+  border-radius: 25px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-tabs button:hover {
+  background-color: #d32f2f;
 }

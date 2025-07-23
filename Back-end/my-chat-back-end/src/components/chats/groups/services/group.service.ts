@@ -58,15 +58,18 @@ export class GroupService {
 
     public async createGroup(createGroupDto: CreateGroupDto): Promise<GroupRo> {
         const membersList = await this.getValidUsers(createGroupDto.membersList);
+        console.log('got members: ', membersList.map(m => m.username));
 
         const groupComplete = {
             createdAt: Date.now(),
             groupName: createGroupDto.groupName,
             admin: createGroupDto.admin,
             description: createGroupDto.description ? createGroupDto.description : "",
-            membersList: membersList,
+            membersList: membersList.map(m => m._id),
             chatType: Groups.name,
         }
+
+        console.log('complete Group: ', groupComplete);
 
         const newGroup = new this.groupsModel(groupComplete);
         await newGroup.save();
@@ -127,14 +130,16 @@ export class GroupService {
         return this.buildGroupRo(updatedGroup);
     }
 
-    private async getValidUsers(membersList: Types.ObjectId[]): Promise<Users[]> {
-        const ActiveMembersList = await this.usersServices.getUsersByIds(membersList);
+    private async getValidUsers(membersList: string[]): Promise<Users[]> {
+        const ActiveMembersList: Promise<Users[]> = Promise.all(
+            membersList.map(async m => await this.usersServices.getUserByUserName(m))
+        );
 
-        const userIds = ActiveMembersList.map(user => user._id);
-        const userNames = ActiveMembersList.map(user => user.username);
+        const userIds = (await ActiveMembersList).map(user => user._id);
+        const userNames = (await ActiveMembersList).map(user => user.username);
 
         const foundUsernames = new Set(userNames);
-        const notFound = ActiveMembersList.filter(user => !foundUsernames.has(user.username));
+        const notFound = (await ActiveMembersList).filter(user => !foundUsernames.has(user.username));
         if (notFound.length) throw new BadRequestException(`Users not found: ${notFound.join(', ')}`);
 
         return ActiveMembersList;

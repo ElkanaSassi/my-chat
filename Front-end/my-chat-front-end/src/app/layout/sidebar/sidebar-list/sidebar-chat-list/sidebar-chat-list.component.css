@@ -1,74 +1,172 @@
+/* Sidebar container wrapping chat list and add button */
+.sidebar-chat-container {
+  max-width: 420px;
+  height: calc(100vh - 120px); /* adjust this based on your layout */
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f4f2; /* same light teal as header nav-tabs */
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(91, 132, 120, 0.2);
+  padding: 1rem 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Scrollable chat list takes all vertical space */
 .chat-list {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fafafa;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem;
 }
 
+/* Chat item */
 .chat-item {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
+  margin-bottom: 10px;
 }
 
-.chat-item:hover {
-  background-color: #f0f0f0;
-}
-
+/* Chat name button */
 .chat-name {
+  width: 100%;
+  padding: 10px 22px;
   font-size: 1rem;
-  color: #333;
-  font-weight: 500;
-}
-
-.add-group-btn {
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  font-weight: bold;
+  font-weight: 600;
+  color: #5b8478;
+  background-color: transparent;
   border: none;
-  border-radius: 6px;
+  border-radius: 25px;
   cursor: pointer;
+  text-align: left;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: none;
 }
 
+.chat-name:hover,
+.chat-name:focus {
+  background-color: #d2e3de;
+  color: #3c5f55;
+  outline: none;
+}
 
+/* Active chat button style */
+.chat-name.active {
+  background-color: #5b8478;
+  color: white;
+  box-shadow: 0 4px 8px rgba(91, 132, 120, 0.4);
+}
 
+/* Add Group Button fixed at bottom */
+.add-group-btn {
+  background-color: #5b8478;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0; /* prevent shrinking */
+  width: 100%;
+}
 
+.add-group-btn:hover,
+.add-group-btn:focus {
+  background-color: #3c5f55;
+  outline: none;
+}
+/* Popup modal container */
 .add-group {
-  position: fixed; /* fixed to viewport */
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* perfect center */
-  
-  width: 300px;
-  max-height: 400px;
-  overflow-y: auto;
-  background-color: #f1f1f1;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%);
+  background: #f0f4f2; /* same light teal as sidebar/header */
+  width: 100%;
+  max-width: 480px;
+  padding: 28px 32px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(91, 132, 120, 0.4); /* teal shadow */
   z-index: 1000;
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Popup header */
 .add-group-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #3c5f55; /* dark teal */
 }
 
-.add-btn {
-  background-color: #28a745;
+/* Close button in popup header */
+.add-group-header .btn-danger {
+  background-color: #e57373; /* keep as red for "danger" feel, or switch below */
   color: white;
   border: none;
-  padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: 25px;
+  padding: 6px 14px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
+/* Optional: change close button to teal theme */
+/*
+.add-group-header .btn-danger {
+  background-color: #5b8478;
+}
+.add-group-header .btn-danger:hover,
+.add-group-header .btn-danger:focus {
+  background-color: #3c5f55;
+}
+*/
+
+.add-group-header .btn-danger:hover,
+.add-group-header .btn-danger:focus {
+  background-color: #d32f2f; /* keep red hover for clear close action */
+  outline: none;
+}
+
+/* Form group and labels inside popup */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Add button inside popup */
+.add-btn {
+  background-color: #5b8478; /* teal main */
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 14px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn:hover,
+.add-btn:focus {
+  background-color: #3c5f55; /* darker teal */
+  outline: none;
+}

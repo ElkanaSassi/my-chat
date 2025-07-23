@@ -1,61 +1,72 @@
-<button class="add-group-btn" (click)="addGroup = !addGroup">
-  Add Group
-</button>
+<div class="sidebar-chat-container">
+  <div class="chat-list">
+    <div class="chat-item" *ngFor="let chat of chats">
+      <button 
+        class="chat-name" 
+        type="button" 
+        [class.active]="chat === activeChat"
+        (click)="onChatClicked(chat)">
+        {{ chatName(chat) }}
+      </button>
+    </div>
+  </div>
 
-<!-- Popup user list -->
+  <button class="add-group-btn" type="button" (click)="addGroup = !addGroup">
+    Add Group
+  </button>
+</div>
+
+<!-- Add Group Popup -->
 <div class="add-group" *ngIf="addGroup">
   <div class="add-group-header">
-    <span>Add Group</span>
-    <button class="btn btn-danger" (click)="addGroup = false">X</button>
+    <h2>Add Group</h2>
+    <button type="button" class="btn btn-danger" (click)="addGroup = false">
+      &times;
+    </button>
   </div>
 
   <form [formGroup]="addGroupForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label>Group Name</label>
-      <div>
-        <input type="text" id="groupName" formControlName="groupName" required>
-      </div>
+    <div class="form-group">
+      <label for="groupName" class="form-label">Group Name</label>
+      <mat-form-field appearance="fill" class="full-width">
+        <input
+          matInput
+          type="text"
+          id="groupName"
+          formControlName="groupName"
+          required
+          autocomplete="off"
+        />
+      </mat-form-field>
     </div>
 
-    <div>
-      <label>Members</label>
-      <div>
-        <!-- <mat-form-field>
-          <mat-label>Select Toppings</mat-label>
-          <mat-select [formControl]="toppings" multiple>
-            <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
-
-        <select class="form-multi-select" id="ms1" multiple data-coreui-search="global">
-          <option *ngFor="let contact of user.contacts" [value]="contact">{{ contact }}</option>
-        </select>
-      </div>
+    <div class="form-group">
+      <label for="members" class="form-label">Members</label>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-select id="members" formControlName="members" multiple>
+          <mat-option *ngFor="let contact of user.contacts" [value]="contact">
+            {{ contact }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
-
-    <div>
-      <label>Description</label>
-      <div>
-        <input type="text" id="description" formControlName="description" required>
-      </div>
+    <div class="form-group">
+      <label for="description" class="form-label">Description (Optional)</label>
+      <mat-form-field appearance="fill" class="full-width">
+        <textarea
+          matInput
+          id="description"
+          formControlName="description"
+          rows="3"
+          placeholder="Add a brief description"
+          autocomplete="off"
+        ></textarea>
+      </mat-form-field>
     </div>
-    <!-- <div *ngIf="!isLoginSuccessful">
-      <span style="color:red;">Username or Password are Incorrect!</span>
-    </div> -->
 
-    <div>
-      <button class="add-btn">Add</button>
-    </div>
-  </form>
-
-
-</div>
-
-<div class="chat-list">
-  <div class="chat-item" *ngFor="let chat of chats">
-    <button class="btn chat-name" (click)="onChatClicked(chat)">
-      {{ chatName(chat) }}
+    <button class="add-btn" type="submit" [disabled]="addGroupForm.invalid">
+      Add Group
     </button>
-  </div>
+  </form>
 </div>

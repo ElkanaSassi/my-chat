@@ -1,19 +1,24 @@
 <div class="nav-tabs-container">
-    <ul class="nav nav-tabs">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" [routerLink]="['/layout/sidebar/chats']" routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                (click)="goToChats()">
-                Chats
-            </a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" [routerLink]="['/layout/sidebar/contacts']" routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                (click)="goToContacts()">
-                Contacts
-            </a>
-        </li>
-        <button (click)="onLogOut()">Logout</button>
-    </ul>
+  <div class="user-info">
+    <i class="fas fa-user-circle"></i>
+    <span>Hey, {{ user.username }}</span>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" [routerLink]="['/layout/sidebar/chats']" routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }" (click)="goToChats()">
+        Chats
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" [routerLink]="['/layout/sidebar/contacts']" routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }" (click)="goToContacts()">
+        Contacts
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button (click)="onLogOut()">Logout</button>
+    </li>
+  </ul>
 </div>

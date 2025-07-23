@@ -3,9 +3,9 @@ import { Types } from "mongoose";
 
 export class CreateGroupDto {
     @IsArray()
-    @IsMongoId({ each: true })
+    @IsString({ each: true })
     @IsNotEmpty()
-    membersList: Types.ObjectId[];
+    membersList: string[];
 
     @IsString()
     @IsNotEmpty()

@@ -1,5 +1,5 @@
-<div class="chat-header">
+<div *ngIf="!!currentChat">
   <div class="chat-partner-info">
-    <div class="name" *ngIf="!!currentChat">{{ chatName(currentChat) }}</div>
+    <div class="name">{{ chatName(currentChat) }}</div>
   </div>
 </div>

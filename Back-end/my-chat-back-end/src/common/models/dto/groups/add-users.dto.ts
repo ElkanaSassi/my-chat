@@ -6,5 +6,5 @@ export class AddOrRemoveUsersDto {
     @IsArray()
     @IsString({ each: true })
     @IsNotEmpty()
-    membersList: Types.ObjectId[];
+    membersList: string[];
 }
