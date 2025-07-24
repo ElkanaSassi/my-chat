@@ -58,7 +58,6 @@ export class GroupService {
 
     public async createGroup(createGroupDto: CreateGroupDto): Promise<GroupRo> {
         const membersList = await this.getValidUsers(createGroupDto.membersList);
-        console.log('got members: ', membersList.map(m => m.username));
 
         const groupComplete = {
             createdAt: Date.now(),
@@ -68,8 +67,6 @@ export class GroupService {
             membersList: membersList.map(m => m._id),
             chatType: Groups.name,
         }
-
-        console.log('complete Group: ', groupComplete);
 
         const newGroup = new this.groupsModel(groupComplete);
         await newGroup.save();
@@ -96,6 +93,17 @@ export class GroupService {
             messagesList: group.messages
         }
         return messagesRo;
+    }
+
+    public async getGroupMessages(groupId: Types.ObjectId): Promise<MessagesRo> {
+        const group = await this.groupsModel.findById(groupId).exec();
+        if (!group) {
+            throw new NotFoundException(`Faild: Couldn't find messages of Group: ${groupId}.`);
+        }
+        const messagesToReturn: MessagesRo = {
+            messagesList: group.messages
+        } 
+        return messagesToReturn;
     }
 
     public async addUsersToGroup(groupId: Types.ObjectId, addUsersDto: AddOrRemoveUsersDto): Promise<GroupRo> {

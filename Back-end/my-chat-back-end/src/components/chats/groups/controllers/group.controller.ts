@@ -22,17 +22,22 @@ export class GroupController {
     public getUsersInGroup(@Param('groupId') groupId: Types.ObjectId): Promise<string[]> {
         return this.groupService.getUsersInGroup(groupId);
     }
-    
+
 
     @Post()
     public createNewGroup(@Body() createGroupDto: CreateGroupDto): Promise<GroupRo> {
         return this.groupService.createGroup(createGroupDto);
     }
 
-    @Post('messages/:groupId')
-    public createMessage(@Param('groupId') groupId: string, @Body() createMessageDto: CreateMessageDto): Promise<MessagesRo> {
-        return this.groupService.createMessage(new Types.ObjectId(groupId), createMessageDto);
+    @Get('messages/:groupId')
+    public getDmMessages(@Param('groupId') groupId: string): Promise<MessagesRo> {
+        return this.groupService.getGroupMessages(new Types.ObjectId(groupId));
     }
+
+    // @Post('messages/:groupId')
+    // public createMessage(@Param('groupId') groupId: string, @Body() createMessageDto: CreateMessageDto): Promise<MessagesRo> {
+    //     return this.groupService.createMessage(new Types.ObjectId(groupId), createMessageDto);
+    // }
 
     @Patch('addUsersToGroup/:groupId')
     public addUsersToGroup(@Param('groupId') groupId: Types.ObjectId, @Body() addUsersDto: AddOrRemoveUsersDto)

@@ -23,7 +23,7 @@ export class WebSocketService {
         this.socket.emit('sendDm', data);
     }
 
-    getDm(): Observable<MessagesRo> {
+    getDmMessages(): Observable<MessagesRo> {
         return new Observable((observer) => {
             this.socket.on('newDm', (data: MessagesRo) => {
                 observer.next(data);
@@ -31,11 +31,11 @@ export class WebSocketService {
         })
     }
 
-    sendGroup(data: any) {
-        this.socket.emit('sendGroup', data);
+    sendGroupMessage(data: any) {
+        this.socket.emit('sendGroupMessage', data);
     }
 
-    getGroup(): Observable<MessagesRo> {
+    getGroupMessages(): Observable<MessagesRo> {
         return new Observable((observer) => {
             this.socket.on('newGroup', (data: MessagesRo) => {
                 observer.next(data);

@@ -1,4 +1,6 @@
 .messages-list {
+  max-height: 100%;
+  overflow-y: auto;
   flex: 1;
   padding: 16px;
   background-color: #f0f4f2; /* Light teal background */

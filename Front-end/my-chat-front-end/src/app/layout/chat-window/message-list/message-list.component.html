@@ -1,4 +1,4 @@
-<div class="messages-list" *ngIf="currentChat && messages">
+<div #scrollMe class="messages-list" [hidden]="!currentChat || !messages">
   <div
     *ngFor="let message of messages.messagesList"
     class="message-row"

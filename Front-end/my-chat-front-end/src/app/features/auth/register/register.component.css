@@ -18,7 +18,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  border-top: 5px solid #7d6660;
+  border-bottom: 5px solid #7d6660;
 }
 
 h1 {

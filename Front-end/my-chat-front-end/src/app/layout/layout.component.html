@@ -1,12 +1,18 @@
 <div class="layout">
-  <div class="sidebar-layout">
-    <div style="height: 100%; background: #f1f1f1;">
-      <app-sidebar></app-sidebar>
+    <div class="sidebar-layout">
+        <div style="height: 100%; background: #f1f1f1;">
+            <app-sidebar></app-sidebar>
+        </div>
     </div>
-  </div>
-  <div class="chat-layout">
-    <div style="flex: 1; background: #fafafa;">
-      <app-chat-window></app-chat-window>
+    <div class="chat-layout">
+        <div *ngIf="!showPlaceHolder" style="flex: 1; background: #fafafa;">
+            <app-chat-window></app-chat-window>
+        </div>
+        <div class="placeholder-container" *ngIf="showPlaceHolder">
+            <div class="placeholder-content">
+                <h2>Welcome to myChat</h2>
+                <p>Start a new conversation or select a chat to begin messaging.</p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

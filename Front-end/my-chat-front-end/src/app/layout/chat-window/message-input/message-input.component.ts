@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Socket } from 'socket.io-client';
@@ -42,11 +42,14 @@ export class MessageInputComponent {
                 this.webSocketService.joinRoom(this.currentChat._id);
             }
         });
-
+    }
+    
+    @HostListener('document:keydown.Enter', ['$event'])
+    onEscKey(event: Event): void {
+        this.sendMessage();
     }
 
     sendMessage() {
-
         if (this.messageText) {
             const completeMessage: CreateMessageDto = {
                 from: this.user.username,
@@ -57,7 +60,7 @@ export class MessageInputComponent {
                 ? this.webSocketService.sendDm({
                     room: this.currentChat._id, messageDto: completeMessage
                 })
-                : this.webSocketService.sendGroup({
+                : this.webSocketService.sendGroupMessage({
                     room: this.currentChat._id, messageDto: completeMessage
                 });;
             this.messageText = '';

@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpService } from '../../../core/services/http/httpConnection.service';
 import { ChatSelectionService } from '../../chat-selection.service';
 import { LocalStorageService } from '../../../core/services/localStorage/localStorage.service';
 import { MessagesRo } from '../../../common/ro/messages/messages.ro';
-import { io, Socket } from 'socket.io-client';
-import { Observable } from 'rxjs';
 import { WebSocketService } from '../../../core/services/websocket/websocket.service';
 import { ChatRo } from '../../../common/ro/chats/chats.type';
 
@@ -17,6 +15,7 @@ import { ChatRo } from '../../../common/ro/chats/chats.type';
     styleUrl: './message-list.component.css'
 })
 export class MessageListComponent {
+    @ViewChild('scrollMe') private scrollMeRef!: ElementRef;
     messages: MessagesRo;
     username: string;
     currentChat: ChatRo;
@@ -38,40 +37,53 @@ export class MessageListComponent {
                 this.loadChat(chat);
             }
         });
+    }
 
+    ngAfterViewChecked() {
+        this.scrollToBottom();
+    }
 
+    scrollToBottom(): void {
+        try {
+            const element = this.scrollMeRef.nativeElement;
+            element.scrollTop = element.scrollHeight;
+        } catch (err) {
+            console.error("Error scrolling to bottom:", err);
+        }
     }
 
     loadChat(chat: ChatRo) {
         if (chat.chatType === 'DmRo') {
-            this.httpService.get<MessagesRo>(`dms/messages/${chat._id}`).subscribe({
-                next: (res) => {
-                    this.messages = res;
-                },
-                error: (err) => { }
-            });
+            const path: string = `dms/messages/${chat._id}`;
+            this.getMessages(path);
 
-            this.websocketService.getDm().subscribe({
-                next: (res) => {
-                    this.messages = res;
-                }
+            this.websocketService.getDmMessages().subscribe({
+                next: (res) => { this.messages = res; },
+                error: (err) => { this.messages = { messagesList: [] }; }
             });
         }
-        else if (chat.chatType === 'GroupRo') {
-            this.httpService.get<MessagesRo>(`groups/messages/${chat._id}`).subscribe({
-                next: (res) => {
-                    this.messages = res;
-                },
-                error: (err) => { }
-            });
+        else if (chat.chatType === 'Groups') {
+            const path: string = `groups/messages/${chat._id}`;
+            this.getMessages(path);
 
-            this.websocketService.getGroup().subscribe({
-                next: (res) => {
-                    this.messages = res;
-                }
+            this.websocketService.getGroupMessages().subscribe({
+                next: (res) => { this.messages = res; },
+                error: (err) => { this.messages = { messagesList: [] }; }
             });
         }
+    }
 
+    getMessages(path: string): void {
+        this.httpService.get<MessagesRo>(path).subscribe({
+            next: (res) => {
+                this.messages = res;
+            },
+            error: (err) => {
+                this.messages = {
+                    messagesList: []
+                };
+            }
+        });
     }
 
 }

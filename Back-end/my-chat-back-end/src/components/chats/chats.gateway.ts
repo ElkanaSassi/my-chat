@@ -32,19 +32,15 @@ export class ChatsGateway {
 
     @SubscribeMessage('joinDm')
     handleJoinDm(@MessageBody() room: string, @ConnectedSocket() client: Socket) {
-        console.log('roomId: ', room);
         client.join(room);
     }
 
     @SubscribeMessage('sendDm')
     public async handleSendDm(@MessageBody() payload: { room: string, messageDto: CreateMessageDto }, @ConnectedSocket() client: Socket)
         : Promise<MessagesRo> {
-        console.log('in sendDm. payload: roomId:', payload.room, 'Dto', payload.messageDto);
 
         const savedMessage = await this.dmsService.createMessage(new Types.ObjectId(payload.room), payload.messageDto);
         if (!savedMessage) throw new BadRequestException('Failed: Couldn\'t create message.');
-
-        console.log('save message: ', savedMessage);
 
         this.server.to(payload.room).emit('newDm', savedMessage);
 
@@ -53,19 +49,14 @@ export class ChatsGateway {
 
     @SubscribeMessage('joinGroup')
     handleJoinGroup(@MessageBody() room: string, @ConnectedSocket() client: Socket) {
-        console.log('roomId: ', room);
         client.join(room);
     }
 
     @SubscribeMessage('sendGroupMessage')
     public async handleSendGroup(@MessageBody() payload: { room: string, messageDto: CreateMessageDto }, @ConnectedSocket() client: Socket)
         : Promise<MessagesRo> {
-        console.log('in sendDm. payload: roomId:', payload.room, 'Dto', payload.messageDto);
-
         const savedMessage = await this.groupService.createMessage(new Types.ObjectId(payload.room), payload.messageDto);
         if (!savedMessage) throw new BadRequestException('Failed: Couldn\'t create message.');
-            
-        console.log('save message: ', savedMessage);
 
         this.server.to(payload.room).emit('newDm', savedMessage);
 

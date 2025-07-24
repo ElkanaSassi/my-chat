@@ -1,18 +1,18 @@
 .layout {
-    display: flex;
-    height: 100vh;
-    /* full viewport height */
-    width: 100vw;
-    /* full viewport width */
-    overflow: hidden;
+  display: flex;
+  height: 100vh;
+  /* full viewport height */
+  width: 100vw;
+  /* full viewport width */
+  overflow: hidden;
 }
 
 .sidebar-layout {
-    /* background-color: aqua; */
-    width: 30%;
-    min-width: 250px;
-    max-width: 400px;
-    border-right: 1px solid #ddd;
+  /* background-color: aqua; */
+  width: 30%;
+  min-width: 250px;
+  max-width: 400px;
+  border-right: 1px solid #ddd;
 }
 
 .chat-layout {
@@ -20,4 +20,38 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.placeholder-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f4f9f8;
+  /* light minty background */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1rem;
+}
+
+.placeholder-content {
+  background-color: #ffffff;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(91, 132, 120, 0.4);
+  text-align: center;
+  max-width: 420px;
+  width: 100%;
+}
+
+.placeholder-content h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #4f8377;
+  margin: 0 0 0.5rem 0;
+}
+
+.placeholder-content p {
+  font-size: 16px;
+  color: #5d6e6a;
+  margin: 0;
 }

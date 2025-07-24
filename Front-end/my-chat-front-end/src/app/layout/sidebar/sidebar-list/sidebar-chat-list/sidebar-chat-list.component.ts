@@ -76,6 +76,7 @@ export class SidebarChatListComponent {
 
     onChatClicked(chat: ChatRo) {
         this.activeChat = chat;
+        console.log('new chat selected!');
         this.chatSelectionService.setSelectedChat(chat);
     }
 
